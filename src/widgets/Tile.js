@@ -2,10 +2,12 @@
 troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className) {
     "use strict";
 
-    var base = candystore.Button,
+    var base = shoeshine.Widget,
         self = base.extend(className)
+            .addTrait(shoeshine.JqueryWidget)
             .addTrait(bookworm.EntityBound)
-            .addTrait(candystore.EntityWidget);
+            .addTrait(candystore.EntityWidget)
+            .addTrait(candystore.Highlightable, 'Highlightable');
 
     /**
      * @name app.widgets.Tile.create
@@ -15,7 +17,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
 
     /**
      * @class
-     * @extends candystore.Button
+     * @extends shoeshine.Widget
      * @extends bookworm.EntityBound
      * @extends candystore.EntityWidget
      */
@@ -53,6 +55,15 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                     .passEachItemTo(this.removeCssClass, this);
 
                 this.addCssClass('elevation-' + this.entityKey.toDocument().getElevation());
+            },
+
+            /** @private */
+            _updateOrientation: function () {
+                this.htmlAttributes.cssClasses
+                    .filterByPrefix('orientation-')
+                    .passEachItemTo(this.removeCssClass, this);
+
+                this.addCssClass('orientation-' + this.entityKey.toDocument().getOrientation());
             }
         })
         .addMethods(/** @lends app.widgets.Tile# */{
@@ -66,14 +77,9 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 base.init.call(this);
                 bookworm.EntityBound.init.call(this);
                 candystore.EntityWidget.init.call(this, tileKey);
+                candystore.Highlightable.init.call(this);
 
                 this.elevateMethod('onButtonClick');
-
-                var tileDocument = tileKey.toDocument();
-
-                this
-                    .addCssClass('type-' + tileDocument.getTileType())
-                    .addCssClass('elevation-' + tileDocument.getElevation());
             },
 
             /** @ignore */
@@ -82,11 +88,13 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
 
                 this._updateType();
                 this._updateElevation();
+                this._updateOrientation();
 
                 this
                     .subscribeTo(candystore.Button.EVENT_BUTTON_CLICK, this.onButtonClick)
                     .bindToEntityNodeChange(this.entityKey.getFieldKey('type'), 'onTypeChange')
                     .bindToEntityNodeChange(this.entityKey.getFieldKey('elevation'), 'onElevationChange')
+                    .bindToEntityNodeChange(this.entityKey.getFieldKey('orientation'), 'onOrientationChange')
                     .bindToEntityNodeChange(this.entityKey, 'onDocumentReplace');
             },
 
@@ -101,7 +109,10 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
              * @ignore
              */
             contentMarkup: function () {
-                return '<div class="background-image"></div>';
+                return [
+                    '<div class="background-image"></div>',
+                    '<div class="mouse-area"></div>'
+                ].join('');
             },
 
             /** @returns {string} */
@@ -124,19 +135,12 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 var mouseEvent = event.getOriginalEventByType(MouseEvent),
                     tileDocument = this.entityKey.toDocument();
 
-                if (mouseEvent && mouseEvent.shiftKey) {
-                    if (mouseEvent.altKey) {
-                        tileDocument.lowerElevation();
+                if (mouseEvent && mouseEvent.ctrlKey || mouseEvent.metaKey) {
+                    if (mouseEvent.shiftKey) {
+                        tileDocument.rotateCounterClockwise();
                     } else {
-                        tileDocument.raiseElevation();
+                        tileDocument.rotateClockwise();
                     }
-                } else if (mouseEvent && mouseEvent.ctrlKey || mouseEvent.metaKey) {
-                    tileDocument.rotateTileType();
-                } else {
-                    this
-                        .setNextOriginalEvent(event)
-                        .triggerSync(this.EVENT_TILE_CLICK, this.entityKey)
-                        .clearNextOriginalEvent();
                 }
             },
 
@@ -151,9 +155,28 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             },
 
             /** @ignore */
+            onOrientationChange: function () {
+                this._updateOrientation();
+            },
+
+            /** @ignore */
             onDocumentReplace: function () {
                 this._updateType();
                 this._updateElevation();
+            },
+
+            /** @ignore */
+            onMouseEnter: function () {
+                this.highlightOn('hover');
+            },
+
+            /** @ignore */
+            onMouseLeave: function () {
+                this.highlightOff('hover');
             }
         });
+
+    self
+        .on('mouseenter', '.mouse-area', 'onMouseEnter')
+        .on('mouseleave', '.mouse-area', 'onMouseLeave');
 });

@@ -2,16 +2,33 @@
     position: absolute;
     width: 100px;
     height: 50px;
+    pointer-events:none;
 }
 
-.Tile:hover {
-    opacity: 0.5;
+.Tile.hover {
+    opacity: 0.75;
 }
+
+/* CLICK AREA */
+
+.Tile > .mouse-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    -webkit-clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    pointer-events: all;
+}
+
+/* BACKGROUND */
 
 .Tile > .background-image {
     position: absolute;
     bottom: 0;
     left: 0;
+    z-index: 0;
     width: 100px;
     height: 65px;
     background: url('../../images/roadTiles_vector.svg');
@@ -20,19 +37,55 @@
 /* ELEVATION */
 
 .Tile.elevation-1 > .background-image {
+    top: -25px;
 }
 
 .Tile.elevation-2 > .background-image {
+    top: -50px;
 }
 
 /* TILE IMAGE */
 /* Tile origin: -50px -20px */
-/* Tile spacing: -110px -85px */
+/* Tile spacing: -110px -85px/75px */
 
-.Tile.type-97 > .background-image {
+.Tile.type-1 > .background-image {
+    background-position: -50px -20px;
+}
+
+.Tile.type-2.orientation-0 > .background-image,
+.Tile.type-2.orientation-180 > .background-image {
+    background-position: -50px -105px;
+}
+
+.Tile.type-2.orientation-90 > .background-image,
+.Tile.type-2.orientation-270 > .background-image {
+    background-position: -50px -180px;
+}
+
+.Tile.type-3 > .background-image {
     background-position: -50px -265px;
 }
 
-.Tile.type-98 > .background-image {
-    background-position: -50px -105px;
+.Tile.type-4 > .background-image {
+    background-position: -50px -340px;
+}
+
+.Tile.type-5 > .background-image {
+    background-position: -50px -415px;
+}
+
+.Tile.type-6 > .background-image {
+    background-position: -50px -490px;
+}
+
+.Tile.type-7 > .background-image {
+    background-position: -50px -565px;
+}
+
+.Tile.type-8 > .background-image {
+    background-position: -50px -640px;
+}
+
+.Tile.type-9 > .background-image {
+    background-position: -50px -715px;
 }
