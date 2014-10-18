@@ -20,6 +20,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
      * @extends shoeshine.Widget
      * @extends bookworm.EntityBound
      * @extends candystore.EntityWidget
+     * @extends candystore.Highlightable
      */
     app.widgets.Tile = self
         .setInstanceMapper(function (tileKey) {
