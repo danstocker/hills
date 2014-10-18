@@ -11,39 +11,6 @@ troop.postpone(app.model, 'TileDocument', function () {
      * @returns {app.model.TileDocument}
      */
 
-    var tileTypesToTiles = sntls.StringDictionary.create({
-        1 : '#', // crossing
-        2 : '|', // straight road
-        3 : '-', // elevated grass
-        4 : '_', // low grass
-        5 : '=', // asphalt
-        6 : '~', // water
-        7 : ',', // low dirt
-        8 : '\'', // high dirt
-        9 : '.', // sand
-        10: '/', // diagonal ramp
-        11: '\\', // flat ramp
-        12: '1', // straight road in water
-        13: 'i', // narrow road on ramp
-        14: 'I', // wide road on ramp
-        15: 't', // narrow t-section
-        16: 'c', // turn
-        17: 'U', // dead end
-        18: 'E', // sidewalk
-        19: 'T', // thick t-section
-        20: 'L', // corner
-        21: '[', // water with side grass
-        22: '\"', // water with grass in corner
-        23: '(', // water with grass on adjacent sides
-        24: '$', // waterway with grass
-        25: '{', // waterway turn in grass
-        26: ']', // water with side sand
-        27: '`', // water with sand in corner
-        28: ')', // water with sand on adjacent sides
-        29: '%', // waterway with sand
-        30: '}' // waterway turn in sand
-    });
-
     /**
      * @class
      * @extends bookworm.Document
@@ -54,28 +21,16 @@ troop.postpone(app.model, 'TileDocument', function () {
             TILE_TYPE_LOW: 97,
 
             /** @constant */
-            TILE_TYPE_HIGH: 100,
-
-            /**
-             * @type {sntls.StringDictionary}
-             * @constant
-             */
-            tileTypesToTiles: tileTypesToTiles,
-
-            /**
-             * @type {sntls.StringDictionary}
-             * @constant
-             */
-            tilesToTileTypes: tileTypesToTiles.reverse()
+            TILE_TYPE_HIGH: 100
         })
         .addMethods(/** @lends app.model.TileDocument# */{
             /**
-             * @param {string} tileType
+             * @param {bookworm.DocumentKey} patternKey
              * @returns {app.model.TileDocument}
              */
-            setTileType: function (tileType) {
-                this.getField('type')
-                    .setValue(tileType);
+            setPattern: function (patternKey) {
+                this.getField('pattern')
+                    .setValue(patternKey.toString());
                 return this;
             },
 
@@ -93,9 +48,12 @@ troop.postpone(app.model, 'TileDocument', function () {
                 return this;
             },
 
-            /** @returns {string} */
-            getTileType: function () {
-                return this.getField('type').getValue();
+            /** @returns {bookworm.DocumentKey} */
+            getPattern: function () {
+                var patternRef = this.getField('pattern').getValue();
+                return patternRef ?
+                    patternRef.toDocumentKey() :
+                    undefined;
             },
 
             /**
@@ -159,13 +117,15 @@ troop.postpone(app.model, 'TileDocument', function () {
              * @memberOf app.model.TileDocument
              */
             createTileDocumentsFromString: function (mapString) {
-                var that = this;
+                var patternsDocument = 'patterns/all'.toDocument();
 
                 mapString.split('')
                     .toCollection()
-                    .forEachItem(function (tileType, tileIndex) {
+                    .forEachItem(function (patternSymbol, tileIndex) {
+                        var patternKey = patternsDocument.getPatternBySymbol(patternSymbol);
+
                         ['tile', tileIndex].toDocument()
-                            .setTileType(that.tilesToTileTypes.getItem(tileType));
+                            .setPattern(patternKey);
                     });
 
                 return this;

@@ -42,11 +42,10 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
         .addPrivateMethods(/** @lends app.widgets.Tile# */{
             /** @private */
             _updateType: function () {
-                this.htmlAttributes.cssClasses
-                    .filterByPrefix('type-')
-                    .passEachItemTo(this.removeCssClass, this);
-
-                this.addCssClass('type-' + this.entityKey.toDocument().getTileType());
+                var patternKey = this.entityKey.toDocument().getPattern();
+                widgets.Pattern.create(patternKey)
+                    .setChildName('pattern')
+                    .addToParent(this);
             },
 
             /** @private */
@@ -79,8 +78,6 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 bookworm.EntityBound.init.call(this);
                 candystore.EntityWidget.init.call(this, tileKey);
                 candystore.Highlightable.init.call(this);
-
-                this.elevateMethod('onButtonClick');
             },
 
             /** @ignore */
@@ -92,8 +89,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 this._updateOrientation();
 
                 this
-                    .subscribeTo(candystore.Button.EVENT_BUTTON_CLICK, this.onButtonClick)
-                    .bindToEntityNodeChange(this.entityKey.getFieldKey('type'), 'onTypeChange')
+                    .bindToEntityNodeChange(this.entityKey.getFieldKey('pattern'), 'onPatternChange')
                     .bindToEntityNodeChange(this.entityKey.getFieldKey('elevation'), 'onElevationChange')
                     .bindToEntityNodeChange(this.entityKey.getFieldKey('orientation'), 'onOrientationChange')
                     .bindToEntityNodeChange(this.entityKey, 'onDocumentReplace');
@@ -111,7 +107,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
              */
             contentMarkup: function () {
                 return [
-                    '<div class="background-image"></div>',
+                    this.getChild('pattern'),
                     '<div class="mouse-area"></div>'
                 ].join('');
             },
@@ -128,25 +124,8 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 return this.htmlAttributes.inlineStyles.getItem('left');
             },
 
-            /**
-             * @param {shoeshine.WidgetEvent} event
-             * @ignore
-             */
-            onButtonClick: function (event) {
-                var mouseEvent = event.getOriginalEventByType(MouseEvent),
-                    tileDocument = this.entityKey.toDocument();
-
-                if (mouseEvent && mouseEvent.ctrlKey || mouseEvent.metaKey) {
-                    if (mouseEvent.shiftKey) {
-                        tileDocument.rotateCounterClockwise();
-                    } else {
-                        tileDocument.rotateClockwise();
-                    }
-                }
-            },
-
             /** @ignore */
-            onTypeChange: function () {
+            onPatternChange: function () {
                 this._updateType();
             },
 
@@ -166,6 +145,22 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 this._updateElevation();
             },
 
+            /**
+             * @param {Event} event
+             * @ignore
+             */
+            onClick: function (event) {
+                var tileDocument = this.entityKey.toDocument();
+
+                if (event && event.ctrlKey || event.metaKey) {
+                    if (event.shiftKey) {
+                        tileDocument.rotateCounterClockwise();
+                    } else {
+                        tileDocument.rotateClockwise();
+                    }
+                }
+            },
+
             /** @ignore */
             onMouseEnter: function () {
                 this.highlightOn('hover');
@@ -178,6 +173,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
         });
 
     self
+        .on('click', '', 'onClick')
         .on('mouseenter', '.mouse-area', 'onMouseEnter')
         .on('mouseleave', '.mouse-area', 'onMouseLeave');
 });

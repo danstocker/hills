@@ -1,3 +1,7 @@
 .Board {
     position: relative;
 }
+
+.Board > .Tile {
+    position: absolute;    
+}

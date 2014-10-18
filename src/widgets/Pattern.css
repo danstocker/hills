@@ -1,0 +1,41 @@
+.Pattern {
+    width: 100px;
+    height: 65px;
+    background: url('../../images/roadTiles_vector.svg');
+}
+
+.Pattern.pattern-1 {
+    background-position: -50px -20px;
+}
+
+.Pattern.pattern-2 {
+    background-position: -50px -105px;
+}
+
+.Pattern.pattern-3 {
+    background-position: -50px -265px;
+}
+
+.Pattern.pattern-4 {
+    background-position: -50px -340px;
+}
+
+.Pattern.pattern-5 {
+    background-position: -50px -415px;
+}
+
+.Pattern.pattern-6 {
+    background-position: -50px -490px;
+}
+
+.Pattern.pattern-7 {
+    background-position: -50px -565px;
+}
+
+.Pattern.pattern-8 {
+    background-position: -50px -640px;
+}
+
+.Pattern.pattern-9 {
+    background-position: -50px -715px;
+}
