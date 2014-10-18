@@ -11,7 +11,7 @@ troop.postpone(app.model, 'TileDocument', function () {
      * @returns {app.model.TileDocument}
      */
 
-    var tileTypesToTiles = sntls.StringDictionary.create({
+    var tileIdsToTiles = sntls.StringDictionary.create({
         1 : '#', // crossing
         2 : '|', // straight road
         3 : '-', // elevated grass
@@ -60,13 +60,13 @@ troop.postpone(app.model, 'TileDocument', function () {
              * @type {sntls.StringDictionary}
              * @constant
              */
-            tileTypesToTiles: tileTypesToTiles,
+            tileIdsToTiles: tileIdsToTiles,
 
             /**
              * @type {sntls.StringDictionary}
              * @constant
              */
-            tilesToTileTypes: tileTypesToTiles.reverse()
+            tilesToTileIds: tileIdsToTiles.reverse()
         })
         .addMethods(/** @lends app.model.TileDocument# */{
             /**
@@ -165,7 +165,7 @@ troop.postpone(app.model, 'TileDocument', function () {
                     .toCollection()
                     .forEachItem(function (tileType, tileIndex) {
                         ['tile', tileIndex].toDocument()
-                            .setTileType(that.tilesToTileTypes.getItem(tileType));
+                            .setTileType(that.tilesToTileIds.getItem(tileType));
                     });
 
                 return this;
