@@ -1,7 +1,7 @@
 .Tile {
     position: absolute;
-    width: 64px;
-    height: 32px;
+    width: 100px;
+    height: 50px;
 }
 
 .Tile:hover {
@@ -10,37 +10,29 @@
 
 .Tile > .background-image {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
-    width: 64px;
-    height: 64px;
-    background: url('../../images/terrain_0.png');
+    width: 100px;
+    height: 65px;
+    background: url('../../images/roadTiles_vector.svg');
 }
 
 /* ELEVATION */
 
 .Tile.elevation-1 > .background-image {
-    top: -16px;
 }
 
 .Tile.elevation-2 > .background-image {
-    top: -32px;
 }
 
 /* TILE IMAGE */
+/* Tile origin: -50px -20px */
+/* Tile spacing: -110px -85px */
 
 .Tile.type-97 > .background-image {
-    background-position: -64px 0;
+    background-position: -50px -265px;
 }
 
 .Tile.type-98 > .background-image {
-    background-position: -256px -512px;
-}
-
-.Tile.type-99 > .background-image {
-    background-position: -256px -320px;
-}
-
-.Tile.type-100 > .background-image {
-    background-position: -128px -128px;
+    background-position: -50px -105px;
 }

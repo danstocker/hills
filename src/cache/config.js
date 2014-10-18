@@ -18,9 +18,11 @@ troop.amendPostponed(bookworm, 'config', function () {
                 /** @class app.model.TileNode */
                 tile: /** @lends app.model.TileNode# */{
                     /** @type {number} */
-                    type: 'number',
+                    type       : 'number',
                     /** @type {number} */
-                    elevation: 'number'
+                    elevation  : 'number',
+                    /** @type {number} */
+                    orientation: 'number'
                 }
             }
         }

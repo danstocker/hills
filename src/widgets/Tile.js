@@ -28,13 +28,13 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             EVENT_TILE_CLICK: 'tile-click',
 
             /** @constant */
-            TILE_WIDTH: 64,
+            TILE_WIDTH: 100,
 
             /** @constant */
-            TILE_HEIGHT: 32,
+            TILE_HEIGHT: 50,
 
             /** @constant */
-            TILE_VISIBLE_HEIGHT: 64
+            TILE_VISIBLE_HEIGHT: 150
         })
         .addPrivateMethods(/** @lends app.widgets.Tile# */{
             /** @private */
