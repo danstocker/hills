@@ -19,36 +19,26 @@ troop.postpone(app.model, 'BoardDocument', function () {
     app.model.BoardDocument = self
         .addMethods(/** @lends app.model.BoardDocument# */{
             /**
-             * @param {string} mapString
-             * @returns {object}
-             * @memberOf app.model.BoardDocument
+             * @param {number} width
+             * @returns {app.model.BoardDocument}
              */
-            createBoardNodeFromString: function (mapString) {
-                var width = Math.sqrt(mapString.length / 4);
-
-                dessert.assert(width === Math.floor(width), "Invalid map dimensions");
-
-                return {
-                    width : width,
-                    height: width * 2,
-                    tiles : mapString.split('')
-                        .toCollection()
-                        .mapValues(function (tileType, tileIndex) {
-                            return {
-                                order: tileIndex,
-                                value: ['tile', tileIndex].toDocumentKey().toString()
-                            };
-                        })
-                        .mapKeys(function (itemNode) {
-                            return itemNode.value;
-                        })
-                        .items
-                };
+            setWidth: function (width) {
+                this.getField('width').setValue(width);
+                return this;
             },
 
             /** @returns {number} */
             getWidth: function () {
                 return this.getField('width').getValue();
+            },
+
+            /**
+             * @param {number} height
+             * @returns {app.model.BoardDocument}
+             */
+            setHeight: function (height) {
+                this.getField('height').setValue(height);
+                return this;
             },
 
             /** @returns {number} */
@@ -66,13 +56,51 @@ troop.postpone(app.model, 'BoardDocument', function () {
                     .callOnEachItem('toDocumentKey');
             },
 
+            /**
+             * @param {string} mapString
+             * @returns {app.model.BoardDocument}
+             */
+            importMap: function (mapString) {
+                var that = this,
+                    serializedTiles = mapString.match(/.{1,3}/g)
+                        .toCollection(),
+                    width = Math.sqrt(serializedTiles.getKeyCount() / 4),
+                    tilesNode = serializedTiles
+                        .mapKeys(function (serializedTile, tileIndex) {
+                            return 'tile/' + tileIndex;
+                        })
+                        .forEachItem(function (serializedTile, tileRef) {
+                            tileRef.toDocument()
+                                .fromString(serializedTile);
+                        })
+                        .mapValues(function (serializedTile, tileRef) {
+                            return parseInt(tileRef.toDocumentKey().documentId, 10);
+                        })
+                        .items;
+
+                this
+                    .setWidth(width)
+                    .setHeight(width * 2)
+                    .getField('tiles').setValue(tilesNode);
+
+                return this;
+            },
+
+            /** @returns {string} */
+            exportMap: function () {
+                return '\"' + this.toString()
+                    .match(new RegExp('.{1,' + this.getWidth() * 3 + '}', 'g'))
+                    .join('"+\n"') + '\"';
+            },
+
             /** @returns {string} */
             toString: function () {
                 return this.getField('tiles')
                     .getItemsAsCollection()
-                    .collectProperty('value')
-                    .callOnEachItem('toDocumentKey')
-                    .collectProperty('documentId')
+                    .getKeysAsHash()
+                    .toCollection()
+                    .callOnEachItem('toDocument')
+                    .callOnEachItem('toString')
                     .getValues()
                     .join('');
             }
@@ -88,27 +116,21 @@ troop.amendPostponed(bookworm, 'Document', function (ns, className, /**app.model
         });
 }, app.model);
 
-(function (/**app.model*/model) {
+(function () {
     "use strict";
 
     troop.Properties.addProperties.call(
         String.prototype,
         /** @lends String# */{
-            /** @returns {bookworm.EntityKey} */
-            toBoardNode: function () {
-                return model.BoardDocument.createBoardNodeFromString(this.valueOf());
-            },
-
             /**
              * @param {string} [boardId]
+             * @returns {app.model.BoardDocument}
              */
             toBoardDocument: function (boardId) {
-                model.TileDocument.createTileDocumentsFromString(this);
-
                 return ['board', boardId || 'main'].toDocument()
-                    .setNode(this.toBoardNode());
+                    .importMap(this);
             }
         },
         false, false, false
     );
-}(app.model));
+}());

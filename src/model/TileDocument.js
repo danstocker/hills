@@ -11,17 +11,47 @@ troop.postpone(app.model, 'TileDocument', function () {
      * @returns {app.model.TileDocument}
      */
 
+    var orientationToSymbol = sntls.StringDictionary.create({
+            0  : '>',
+            90 : '^',
+            180: '<',
+            270: '~'
+        }),
+        elevationToSymbol = sntls.StringDictionary.create({
+            0: '_',
+            1: '-',
+            2: '^'
+        });
+
     /**
      * @class
      * @extends bookworm.Document
      */
     app.model.TileDocument = self
         .addConstants(/** @lends app.model.TileDocument */{
-            /** @constant */
-            TILE_TYPE_LOW: 97,
+            /**
+             * @type {sntls.StringDictionary}
+             * @constant
+             */
+            orientationToSymbol: orientationToSymbol,
 
-            /** @constant */
-            TILE_TYPE_HIGH: 100
+            /**
+             * @type {sntls.StringDictionary}
+             * @constant
+             */
+            symbolToOrientation: orientationToSymbol.reverse(),
+
+            /**
+             * @type {object}
+             * @constant
+             */
+            elevationToSymbol: elevationToSymbol,
+
+            /**
+             * @type {object}
+             * @constant
+             */
+            symbolToElevation: elevationToSymbol.reverse()
         })
         .addMethods(/** @lends app.model.TileDocument# */{
             /**
@@ -129,6 +159,35 @@ troop.postpone(app.model, 'TileDocument', function () {
                     });
 
                 return this;
+            },
+
+            /**
+             * @param {string} serializedTile Tile in string format.
+             * @returns {app.model.TileDocument}
+             */
+            fromString: function (serializedTile) {
+                var patternSymbol = serializedTile[0],
+                    orientationSymbol = serializedTile[1],
+                    elevationSymbol = serializedTile[2],
+                    patternKey = 'patterns/all'.toDocument().getPatternBySymbol(patternSymbol),
+                    orientation = this.symbolToOrientation.getItem(orientationSymbol),
+                    elevation = this.symbolToElevation.getItem(elevationSymbol);
+
+                this
+                    .setPattern(patternKey)
+                    .setOrientation(orientation)
+                    .setElevation(elevation);
+
+                return this;
+            },
+
+            /** @returns {string} */
+            toString: function () {
+                return [
+                    this.getPattern().toDocument().getSymbol(),
+                    this.orientationToSymbol.getItem(this.getOrientation()),
+                    this.elevationToSymbol.getItem(this.getElevation())
+                ].join('');
             }
         });
 });
@@ -141,3 +200,4 @@ troop.amendPostponed(bookworm, 'Document', function (ns, className, /**app.model
             return documentKey.documentType === 'tile';
         });
 }, app.model);
+
