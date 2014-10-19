@@ -4,6 +4,12 @@ troop.amendPostponed(bookworm, 'config', function () {
 
     bookworm.entities.items = {
         document: {
+            preferences: {
+                main: {
+                    pattern: 'pattern/2'
+                }
+            },
+
             pattern: {
                 1 : {
                     ref   : 'pattern/1',
