@@ -158,6 +158,12 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                     } else {
                         tileDocument.rotateClockwise();
                     }
+                } else if (event && event.altKey) {
+                    if (event.shiftKey) {
+                        tileDocument.lowerElevation();
+                    } else {
+                        tileDocument.raiseElevation();
+                    }
                 } else {
                     tileDocument.setPattern('preferences/main'.toDocument().getPattern());
                 }

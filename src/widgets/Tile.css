@@ -33,11 +33,11 @@
 /* ELEVATION */
 
 .Tile.elevation-1 > .pattern {
-    top: -25px;
+    bottom: 15px;
 }
 
 .Tile.elevation-2 > .pattern {
-    top: -50px;
+    bottom: 30px;
 }
 
 /* TILE IMAGE */
