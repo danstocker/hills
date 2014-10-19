@@ -43,6 +43,14 @@ troop.amendPostponed(bookworm, 'config', function () {
                     elevation  : 'number',
                     /** @type {number} */
                     orientation: 'number'
+                },
+
+                /** @class app.model.TileNode */
+                preferences: /** @lends app.model.TileNode# */{
+                    /** @type {string} */
+                    ref    : 'reference',
+                    /** @type {string} */
+                    pattern: 'reference'
                 }
             }
         }

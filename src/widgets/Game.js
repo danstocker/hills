@@ -29,7 +29,7 @@ troop.postpone(app.widgets, 'Game', function (/**app.widgets*/widgets, className
                     .addToParent(this);
 
                 widgets.PatternDropdownButton.create(
-                        'environment/main/pattern'.toFieldKey(),
+                        'preferences/main/pattern'.toFieldKey(),
                         'patterns/all/patterns'.toFieldKey())
                     .setChildName('palette-button')
                     .addToParent(this);
