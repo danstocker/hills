@@ -175,8 +175,8 @@ troop.postpone(app.model, 'TileDocument', function () {
 
                 this
                     .setPattern(patternKey)
-                    .setOrientation(orientation)
-                    .setElevation(elevation);
+                    .setOrientation(parseInt(orientation, 10))
+                    .setElevation(parseInt(elevation, 10));
 
                 return this;
             },
