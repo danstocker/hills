@@ -18,6 +18,14 @@ troop.postpone(app.widgets, 'PatternDropdownButton', function (/**app.widgets*/w
      * @extends candystore.DataDropdownButton
      */
     app.widgets.PatternDropdownButton = self
+        .addPrivateMethods(/** @lends app.widgets.PatternDropdownButton# */{
+            /** @private */
+            _updatePattern: function () {
+                this.createLabelWidget()
+                    .setChildName('button-label')
+                    .addToParent(this);
+            }
+        })
         .addMethods(/** @lends app.widgets.PatternDropdownButton# */{
             /** @returns {app.widgets.PatternList} */
             createLabelWidget: function () {
@@ -37,11 +45,7 @@ troop.postpone(app.widgets, 'PatternDropdownButton', function (/**app.widgets*/w
             /** @ignore */
             onSelectedChange: function () {
                 base.onSelectedChange.apply(this, arguments);
-                console.log("selected value changed");
-
-                this.createLabelWidget()
-                    .setChildName('button-label')
-                    .addToParent(this);
+                this._updatePattern();
             }
         });
 });
