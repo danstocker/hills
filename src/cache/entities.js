@@ -48,7 +48,7 @@ troop.amendPostponed(bookworm, 'config', function () {
                 },
                 8 : {
                     ref   : 'pattern/8',
-                    symbol: '\'',
+                    symbol: '&',
                     desc  : "High dirt"
                 },
                 9 : {
@@ -58,12 +58,12 @@ troop.amendPostponed(bookworm, 'config', function () {
                 },
                 10: {
                     ref   : 'pattern/10',
-                    symbol: '/',
+                    symbol: 'A',
                     desc  : "Diagonal ramp"
                 },
                 11: {
                     ref   : 'pattern/11',
-                    symbol: '\\',
+                    symbol: '/',
                     desc  : "Flat ramp"
                 },
                 12: {
@@ -118,7 +118,7 @@ troop.amendPostponed(bookworm, 'config', function () {
                 },
                 22: {
                     ref   : 'pattern/22',
-                    symbol: '\"',
+                    symbol: '*',
                     desc  : "Water with grass in corner"
                 },
                 23: {
