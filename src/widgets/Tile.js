@@ -158,6 +158,8 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                     } else {
                         tileDocument.rotateClockwise();
                     }
+                } else {
+                    tileDocument.setPattern('preferences/main'.toDocument().getPattern());
                 }
             },
 
