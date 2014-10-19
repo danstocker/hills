@@ -33,13 +33,8 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
 
                 var boardDocument = boardKey.toDocument(),
                     boardWidth = boardDocument.getWidth(),
-                    boardHeight = boardDocument.getHeight(),
                     tileWidth = widgets.Tile.TILE_WIDTH,
                     tileHeight = widgets.Tile.TILE_HEIGHT;
-
-                this
-                    .setInlineStyle('width', boardWidth * tileWidth + 'px')
-                    .setInlineStyle('height', boardHeight * tileHeight / 2 + 'px');
 
                 boardDocument
                     .getTilesAsCollection()
