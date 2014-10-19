@@ -41,6 +41,15 @@ troop.postpone(app.model, 'PatternsDocument', function () {
                     .setNode('patterns>by-symbol'.toPath(), symbolToPatternRef);
             },
 
+            /** @returns {sntls.Hash} */
+            getPatternsAsCollection: function () {
+                return this.getField('patterns')
+                    .getItemsAsCollection()
+                    .getKeysAsHash()
+                    .toCollection()
+                    .callOnEachItem('toDocumentKey');
+            },
+
             /**
              * @param {string} symbol
              * @returns {bookworm.DocumentKey}

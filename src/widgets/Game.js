@@ -1,8 +1,8 @@
-/*global dessert, troop, sntls, evan, shoeshine, app */
+/*global dessert, troop, sntls, evan, shoeshine, candystore, app */
 troop.postpone(app.widgets, 'Game', function (/**app.widgets*/widgets, className) {
     "use strict";
 
-    var base = shoeshine.Widget,
+    var base = candystore.Page,
         self = base.extend(className);
 
     /**
@@ -13,7 +13,7 @@ troop.postpone(app.widgets, 'Game', function (/**app.widgets*/widgets, className
 
     /**
      * @class
-     * @extends shoeshine.Widget
+     * @extends candystore.Page
      */
     app.widgets.Game = self
         .setInstanceMapper(function () {
@@ -25,6 +25,13 @@ troop.postpone(app.widgets, 'Game', function (/**app.widgets*/widgets, className
                 base.init.call(this);
 
                 widgets.Board.create('board/main'.toDocumentKey())
+                    .setChildName('board')
+                    .addToParent(this);
+
+                widgets.PatternDropdownButton.create(
+                        'environment/main/pattern'.toFieldKey(),
+                        'patterns/all/patterns'.toFieldKey())
+                    .setChildName('palette-button')
                     .addToParent(this);
             },
 

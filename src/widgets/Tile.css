@@ -48,3 +48,83 @@
 .Tile.orientation-270 > .pattern-2 {
     background-position: -50px -180px;
 }
+
+.Tile.orientation-90 > .pattern-11 {
+    background-position: -380px -20px;
+}
+
+.Tile.orientation-90 > .pattern-12 {
+    background-position: -600px -105px;
+}
+
+.Tile.orientation-90 > .pattern-13 {
+    background-position: -160px -180px;
+}
+
+.Tile.orientation-90 > .pattern-14 {
+    background-position: -380px -180px;
+}
+
+.Tile.orientation-90 > .pattern-15 {
+    background-position: -600px -180px;
+}
+
+.Tile.orientation-90 > .pattern-16 {
+    background-position: -820px -180px;
+}
+
+.Tile.orientation-90 > .pattern-17 {
+    background-position: -160px -340px;
+}
+
+.Tile.orientation-90 > .pattern-18 {
+    background-position: -380px -340px;
+}
+
+.Tile.orientation-90 > .pattern-19 {
+    background-position: -600px -340px;
+}
+
+.Tile.orientation-90 > .pattern-20 {
+    background-position: -820px -340px;
+}
+
+.Tile.orientation-90 > .pattern-21 {
+    background-position: -160px -490px;
+}
+
+.Tile.orientation-90 > .pattern-22 {
+    background-position: -380px -490px;
+}
+
+.Tile.orientation-90 > .pattern-23 {
+    background-position: -600px -490px;
+}
+
+.Tile.orientation-90 > .pattern-24 {
+    background-position: -820px -490px;
+}
+
+.Tile.orientation-90 > .pattern-25 {
+    background-position: -930px -490px;
+}
+
+.Tile.orientation-90 > .pattern-26 {
+    background-position: -160px -640px;
+}
+
+.Tile.orientation-90 > .pattern-27 {
+    background-position: -380px -640px;
+}
+
+.Tile.orientation-90 > .pattern-28 {
+    background-position: -600px -640px;
+}
+
+.Tile.orientation-90 > .pattern-29 {
+    background-position: -820px -640px;
+}
+
+.Tile.orientation-90 > .pattern-30 {
+    background-position: -930px -640px;
+}

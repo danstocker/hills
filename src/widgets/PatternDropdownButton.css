@@ -1,0 +1,16 @@
+.PatternDropdownButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 120px;
+    height: 105px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.PatternDropdownButton > .button-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
