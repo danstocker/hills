@@ -1,25 +1,25 @@
-.Game {
+.MapPage {
     position: relative;
 }
 
-.Game > .board {
+.MapPage > .board {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 0;
 }
 
-body.page-Game .Dropdown {
+body.page-MapPage .Dropdown {
     min-width:  150px;
     max-width: 300px;
     max-height: 50%;
     background: rgba(0, 0, 0, 0.5);
 }
 
-body.page-Game .PatternOption.highlighted-focus {
+body.page-MapPage .PatternOption.highlighted-focus {
     -webkit-filter: brightness(130%);
     filter: brightness(130%);
 }
 
-body.page-Game .PatternOption.highlighted-active {
+body.page-MapPage .PatternOption.highlighted-active {
 }

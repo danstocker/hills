@@ -1,25 +1,25 @@
 /*global dessert, troop, sntls, evan, shoeshine, candystore, app */
-troop.postpone(app.widgets, 'Game', function (/**app.widgets*/widgets, className) {
+troop.postpone(app.widgets, 'MapPage', function (/**app.widgets*/widgets, className) {
     "use strict";
 
     var base = candystore.Page,
         self = base.extend(className);
 
     /**
-     * @name app.widgets.Game.create
+     * @name app.widgets.MapPage.create
      * @function
-     * @returns {app.widgets.Game}
+     * @returns {app.widgets.MapPage}
      */
 
     /**
      * @class
      * @extends candystore.Page
      */
-    app.widgets.Game = self
+    app.widgets.MapPage = self
         .setInstanceMapper(function () {
             return 'singleton';
         })
-        .addMethods(/** @lends app.widgets.Game# */{
+        .addMethods(/** @lends app.widgets.MapPage# */{
             /** @ignore */
             init: function () {
                 base.init.call(this);

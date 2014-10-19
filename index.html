@@ -31,7 +31,7 @@
     <script src="src/widgets/PatternOption.js"></script>
     <script src="src/widgets/PatternList.js"></script>
     <script src="src/widgets/PatternDropdownButton.js"></script>
-    <script src="src/widgets/Game.js"></script>
+    <script src="src/widgets/MapPage.js"></script>
     <link rel="stylesheet" href="src/app.css">
     <link rel="stylesheet" href="src/widgets/Pattern.css">
     <link rel="stylesheet" href="src/widgets/Tile.css">
@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="src/widgets/PatternOption.css">
     <link rel="stylesheet" href="src/widgets/PatternList.css">
     <link rel="stylesheet" href="src/widgets/PatternDropdownButton.css">
-    <link rel="stylesheet" href="src/widgets/Game.css">
+    <link rel="stylesheet" href="src/widgets/MapPage.css">
 
     <script>
         $(function () {
@@ -110,7 +110,7 @@
                 "----------------"
             ].join('').toBoardDocument('main');
 
-            app.widgets.Game.create()
+            app.widgets.MapPage.create()
                     .setRootWidget();
         });
     </script>
