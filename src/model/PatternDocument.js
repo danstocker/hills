@@ -16,10 +16,35 @@ troop.postpone(app.model, 'PatternDocument', function () {
      * @extends bookworm.Document
      */
     app.model.PatternDocument = self
+        .addConstants(/** @lends app.model.PatternDocument# */{
+            /** @constant */
+            SPRITE_HORIZONTAL_SPACING: 150,
+
+            /** @constant */
+            SPRITE_VERTICAL_SPACING: 100
+        })
         .addMethods(/** @lends app.model.PatternDocument# */{
             /** @returns {string} */
             getSymbol: function () {
                 return this.getField('symbol').getValue();
+            },
+
+            /** @returns {number} */
+            getBackgroundTop: function () {
+                return -this.getField('top').getValue() * this.SPRITE_VERTICAL_SPACING;
+            },
+
+            /** @returns {number} */
+            getBackgroundLeft: function () {
+                return -this.getField('left').getValue() * this.SPRITE_HORIZONTAL_SPACING * 4;
+            },
+
+            /**
+             * @param {number} shift
+             * @returns {number}
+             */
+            getHorizontalOffset: function (shift) {
+                return -shift * this.SPRITE_HORIZONTAL_SPACING;
             }
         });
 });

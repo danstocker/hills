@@ -1,7 +1,7 @@
 {
-    "name"        : "iso-map",
+    "name"        : "hills",
     "version"     : "0.1.0",
-    "description" : "Isometric map editor",
+    "description" : "Isometric game map editor, demo app for candystore, shoeshine, & bookworm",
     "dependencies": {
         "dessert"   : "~0.3.2",
         "troop"     : "~0.7.2",

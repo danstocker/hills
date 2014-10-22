@@ -3,7 +3,8 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
     "use strict";
 
     var base = shoeshine.Widget,
-        self = base.extend(className);
+        self = base.extend(className)
+            .addTrait(candystore.EntityWidget);
 
     /**
      * @name app.widgets.Pattern.create
@@ -14,6 +15,7 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
     /**
      * @class
      * @extends shoeshine.Widget
+     * @extends candystore.EntityWidget
      */
     app.widgets.Pattern = self
         .addMethods(/** @lends app.widgets.Pattern# */{
@@ -23,7 +25,24 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
              */
             init: function (patternKey) {
                 base.init.call(this);
-                this.addCssClass([patternKey.documentType, patternKey.documentId].join('-'));
+                candystore.EntityWidget.init.call(this, patternKey);
+
+                this.setShift(0);
+            },
+
+            /**
+             * @param {number} shift 0, 1, 2, or 3
+             * @returns {app.widgets.Pattern}
+             */
+            setShift: function (shift) {
+                var patternDocument = this.entityKey.toDocument();
+
+                this.setInlineStyle('background-position', [
+                    patternDocument.getBackgroundLeft() + patternDocument.getHorizontalOffset(shift) + 'px',
+                    patternDocument.getBackgroundTop() + 'px'
+                ].join(' '));
+
+                return this;
             }
         });
 });

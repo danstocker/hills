@@ -41,14 +41,6 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
         })
         .addPrivateMethods(/** @lends app.widgets.Tile# */{
             /** @private */
-            _updateType: function () {
-                var patternKey = this.entityKey.toDocument().getPattern();
-                widgets.Pattern.create(patternKey)
-                    .setChildName('pattern')
-                    .addToParent(this);
-            },
-
-            /** @private */
             _updateElevation: function () {
                 this.htmlAttributes.cssClasses
                     .filterByPrefix('elevation-')
@@ -58,12 +50,13 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             },
 
             /** @private */
-            _updateOrientation: function () {
-                this.htmlAttributes.cssClasses
-                    .filterByPrefix('orientation-')
-                    .passEachItemTo(this.removeCssClass, this);
+            _updatePattern: function () {
+                var tileDocument = this.entityKey.toDocument();
 
-                this.addCssClass('orientation-' + this.entityKey.toDocument().getOrientation());
+                widgets.Pattern.create(tileDocument.getPattern())
+                    .setChildName('pattern')
+                    .setShift(tileDocument.getOrientationShift())
+                    .addToParent(this);
             }
         })
         .addMethods(/** @lends app.widgets.Tile# */{
@@ -84,9 +77,8 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             afterAdd: function () {
                 base.afterAdd.call(this);
 
-                this._updateType();
                 this._updateElevation();
-                this._updateOrientation();
+                this._updatePattern();
 
                 this
                     .bindToEntityNodeChange(this.entityKey.getFieldKey('pattern'), 'onPatternChange')
@@ -126,7 +118,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
 
             /** @ignore */
             onPatternChange: function () {
-                this._updateType();
+                this._updatePattern();
             },
 
             /** @ignore */
@@ -136,12 +128,12 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
 
             /** @ignore */
             onOrientationChange: function () {
-                this._updateOrientation();
+                this._updatePattern();
             },
 
             /** @ignore */
             onDocumentReplace: function () {
-                this._updateType();
+                this._updatePattern();
                 this._updateElevation();
             },
 

@@ -11,156 +11,36 @@ troop.amendPostponed(bookworm, 'config', function () {
             },
 
             pattern: {
-                1 : {
-                    ref   : 'pattern/1',
-                    symbol: '#',
-                    desc  : "Crossing"
-                },
-                2 : {
-                    ref   : 'pattern/2',
-                    symbol: '|',
-                    desc  : "Straight road"
-                },
-                3 : {
-                    ref   : 'pattern/3',
-                    symbol: '-',
-                    desc  : "Elevated grass"
-                },
-                4 : {
-                    ref   : 'pattern/4',
-                    symbol: '_',
-                    desc  : "Low grass"
-                },
-                5 : {
-                    ref   : 'pattern/5',
-                    symbol: '=',
-                    desc  : "Asphalt"
-                },
-                6 : {
-                    ref   : 'pattern/6',
-                    symbol: '~',
-                    desc  : "Water"
-                },
-                7 : {
-                    ref   : 'pattern/7',
-                    symbol: ',',
-                    desc  : "Low dirt"
-                },
-                8 : {
-                    ref   : 'pattern/8',
-                    symbol: '&',
-                    desc  : "High dirt"
-                },
-                9 : {
-                    ref   : 'pattern/9',
-                    symbol: '.',
-                    desc  : "Sand"
-                },
-                10: {
-                    ref   : 'pattern/10',
-                    symbol: 'A',
-                    desc  : "Diagonal ramp"
-                },
-                11: {
-                    ref   : 'pattern/11',
-                    symbol: '/',
-                    desc  : "Flat ramp"
-                },
-                12: {
-                    ref   : 'pattern/12',
-                    symbol: '1',
-                    desc  : "Straight road in water"
-                },
-                13: {
-                    ref   : 'pattern/13',
-                    symbol: 'i',
-                    desc  : "Narrow road on ramp"
-                },
-                14: {
-                    ref   : 'pattern/14',
-                    symbol: 'I',
-                    desc  : "Wide road on ramp"
-                },
-                15: {
-                    ref   : 'pattern/15',
-                    symbol: 't',
-                    desc  : "Narrow t-section"
-                },
-                16: {
-                    ref   : 'pattern/16',
-                    symbol: 'c',
-                    desc  : "Turn"
-                },
-                17: {
-                    ref   : 'pattern/17',
-                    symbol: 'U',
-                    desc  : "Dead end"
-                },
-                18: {
-                    ref   : 'pattern/18',
-                    symbol: 'E',
-                    desc  : "Sidewalk"
-                },
-                19: {
-                    ref   : 'pattern/19',
-                    symbol: 'T',
-                    desc  : "Thick t-section"
-                },
-                20: {
-                    ref   : 'pattern/20',
-                    symbol: 'L',
-                    desc  : "Corner"
-                },
-                21: {
-                    ref   : 'pattern/21',
-                    symbol: '[',
-                    desc  : "Water with side grass"
-                },
-                22: {
-                    ref   : 'pattern/22',
-                    symbol: '*',
-                    desc  : "Water with grass in corner"
-                },
-                23: {
-                    ref   : 'pattern/23',
-                    symbol: '(',
-                    desc  : "Water with grass on adjacent sides"
-                },
-                24: {
-                    ref   : 'pattern/24',
-                    symbol: '$',
-                    desc  : "Waterway with grass"
-                },
-                25: {
-                    ref   : 'pattern/25',
-                    symbol: '{',
-                    desc  : "Waterway turn in grass"
-                },
-                26: {
-                    ref   : 'pattern/26',
-                    symbol: ']',
-                    desc  : "Water with side sand"
-                },
-                27: {
-                    ref   : 'pattern/27',
-                    symbol: '`',
-                    desc  : "Water with sand in corner"
-                },
-                28: {
-                    ref   : 'pattern/28',
-                    symbol: ')',
-                    desc  : "Water with sand on adjacent sides"
-                },
-                29: {
-                    ref   : 'pattern/29',
-                    symbol: '%',
-                    desc  : "Waterway with sand"
-                },
-                30: {
-                    ref   : 'pattern/30',
-                    symbol: '}',
-                    desc  : "Waterway turn in sand"
-                }
+                1 : {ref: 'pattern/1', symbol: "O", top: 0, left: 0, desc: "Asphalt"},
+                2 : {ref: 'pattern/2', symbol: "I", top: 1, left: 0, desc: "Straight road"},
+                3 : {ref: 'pattern/3', symbol: "T", top: 2, left: 0, desc: "T junction"},
+                4 : {ref: 'pattern/4', symbol: "^", top: 3, left: 0, desc: "Lot entrance"},
+                5 : {ref: 'pattern/5', symbol: "#", top: 4, left: 0, desc: "Crossing"},
+                6 : {ref: 'pattern/6', symbol: "_", top: 5, left: 0, desc: "Lot edge"},
+                7 : {ref: 'pattern/7', symbol: "L", top: 6, left: 0, desc: "Lot corner"},
+                8 : {ref: 'pattern/8', symbol: "U", top: 7, left: 0, desc: "Dead end"},
+                9 : {ref: 'pattern/9', symbol: "C", top: 8, left: 0, desc: "Turn"},
+                10: {ref: 'pattern/10', symbol: "V", top: 9, left: 0, desc: "Ramp"},
+                11: {ref: 'pattern/11', symbol: "A", top: 10, left: 0, desc: "Bridge ramp"},
+                12: {ref: 'pattern/12', symbol: "-", top: 11, left: 0, desc: "Grass"},
+                13: {ref: 'pattern/13', symbol: "=", top: 12, left: 0, desc: "High grass"},
+                14: {ref: 'pattern/14', symbol: "/", top: 13, left: 0, desc: "Hill side"},
+                15: {ref: 'pattern/15', symbol: "Y", top: 14, left: 0, desc: "Hill corner"},
+                16: {ref: 'pattern/16', symbol: "~", top: 0, left: 1, desc: "Water"},
+                17: {ref: 'pattern/17', symbol: "i", top: 1, left: 1, desc: "Bridge"},
+                18: {ref: 'pattern/18', symbol: "`", top: 2, left: 1, desc: "Sand tip"},
+                19: {ref: 'pattern/19', symbol: "]", top: 3, left: 1, desc: "Sand edge"},
+                20: {ref: 'pattern/20', symbol: "j", top: 4, left: 1, desc: "Sand corner"},
+                21: {ref: 'pattern/21', symbol: ")", top: 5, left: 1, desc: "Sand turn"},
+                22: {ref: 'pattern/22', symbol: "|", top: 6, left: 1, desc: "Sand waterway"},
+                23: {ref: 'pattern/23', symbol: "'", top: 7, left: 1, desc: "Grass tip"},
+                24: {ref: 'pattern/24', symbol: "[", top: 8, left: 1, desc: "Grass edge"},
+                25: {ref: 'pattern/25', symbol: "l", top: 9, left: 1, desc: "Grass corner"},
+                26: {ref: 'pattern/26', symbol: "(", top: 10, left: 1, desc: "Grass turn"},
+                27: {ref: 'pattern/27', symbol: "1", top: 11, left: 1, desc: "Grass waterway"},
+                28: {ref: 'pattern/28', symbol: ".", top: 12, left: 1, desc: "Dirt"},
+                29: {ref: 'pattern/29', symbol: ":", top: 13, left: 1, desc: "High dirt"},
+                30: {ref: 'pattern/30', symbol: ",", top: 14, left: 1, desc: "Sand"}
             },
 
             patterns: {

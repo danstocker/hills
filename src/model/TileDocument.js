@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, evan, bookworm, shoeshine, app */
-troop.postpone(app.model, 'TileDocument', function () {
+troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
     "use strict";
 
     var base = bookworm.Document,
@@ -134,11 +134,14 @@ troop.postpone(app.model, 'TileDocument', function () {
                 return this;
             },
 
-            /**
-             * @returns {number} Either 0, 90, 180, or 270. Default is 0.
-             */
+            /** @returns {number} Either 0, 90, 180, or 270. Default is 0. */
             getOrientation: function () {
                 return this.getField('orientation').getValue() || 0;
+            },
+
+            /** @returns {number} */
+            getOrientationShift: function () {
+                return this.getOrientation() / 90;
             },
 
             /**
