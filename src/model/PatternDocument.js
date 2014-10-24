@@ -16,6 +16,9 @@ troop.postpone(app.model, 'PatternDocument', function () {
      * @extends bookworm.Document
      */
     app.model.PatternDocument = self
+        .setInstanceMapper(function (patternKey) {
+            return patternKey.toString();
+        })
         .addConstants(/** @lends app.model.PatternDocument# */{
             /** @constant */
             SPRITE_HORIZONTAL_SPACING: 150,

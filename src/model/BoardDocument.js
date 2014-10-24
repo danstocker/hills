@@ -17,6 +17,9 @@ troop.postpone(app.model, 'BoardDocument', function () {
      * @extends bookworm.Document
      */
     app.model.BoardDocument = self
+        .setInstanceMapper(function (boardKey) {
+            return boardKey.toString();
+        })
         .addMethods(/** @lends app.model.BoardDocument# */{
             /**
              * @param {number} width
