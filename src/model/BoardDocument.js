@@ -47,13 +47,14 @@ troop.postpone(app.model, 'BoardDocument', function () {
             },
 
             /** @returns {sntls.Collection} */
-            getTilesAsCollection: function () {
+            getTileKeysAsCollection: function () {
+                var tilesKey = this.entityKey.getFieldKey('tiles');
+
                 return this.getField('tiles')
                     .getItemsAsCollection()
-                    .mapValues(function (itemNode, tileRef) {
-                        return tileRef;
-                    })
-                    .callOnEachItem('toDocumentKey');
+                    .mapValues(function (itemNode, tileIndex) {
+                        return tilesKey.getItemKey(tileIndex);
+                    });
             },
 
             /**
@@ -61,27 +62,22 @@ troop.postpone(app.model, 'BoardDocument', function () {
              * @returns {app.model.BoardDocument}
              */
             importMap: function (mapString) {
-                var that = this,
+                var tilesKey = this.entityKey.getFieldKey('tiles'),
                     serializedTiles = mapString.match(/.{1,3}/g)
                         .toCollection(),
-                    width = Math.sqrt(serializedTiles.getKeyCount() / 4),
-                    tilesNode = serializedTiles
-                        .mapKeys(function (serializedTile, tileIndex) {
-                            return 'tile/' + tileIndex;
-                        })
-                        .forEachItem(function (serializedTile, tileRef) {
-                            tileRef.toDocument()
-                                .fromString(serializedTile);
-                        })
-                        .mapValues(function (serializedTile, tileRef) {
-                            return parseInt(tileRef.toDocumentKey().documentId, 10);
-                        })
-                        .items;
+                    width = Math.sqrt(serializedTiles.getKeyCount() / 4);
 
+                // writing tile items
+                serializedTiles
+                    .forEachItem(function (serializedTile, tileIndex) {
+                        tilesKey.getItemKey(tileIndex).toItem()
+                            .fromString(serializedTile);
+                    });
+
+                // writing dimensions
                 this
                     .setWidth(width)
-                    .setHeight(width * 2)
-                    .getField('tiles').setValue(tilesNode);
+                    .setHeight(width * 2);
 
                 return this;
             },

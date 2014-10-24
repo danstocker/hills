@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, bookworm, app */
-troop.amendPostponed(bookworm, 'config', function () {
+troop.amendPostponed(bookworm, 'entities', function () {
     "use strict";
 
     bookworm.entities.items = {

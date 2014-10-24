@@ -12,6 +12,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
     /**
      * @name app.widgets.Tile.create
      * @function
+     * @param {bookworm.ItemKey} tileKey
      * @returns {app.widgets.Tile}
      */
 
@@ -42,30 +43,32 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
         .addPrivateMethods(/** @lends app.widgets.Tile# */{
             /** @private */
             _updateElevation: function () {
+                var tileItem = this.entityKey.toItem();
+
                 this.htmlAttributes.cssClasses
                     .filterByPrefix('elevation-')
                     .passEachItemTo(this.removeCssClass, this);
 
-                this.addCssClass('elevation-' + this.entityKey.toDocument().getElevation());
+                this.addCssClass('elevation-' + tileItem.getElevation());
             },
 
             /** @private */
             _updatePattern: function () {
-                var tileDocument = this.entityKey.toDocument();
+                var tileItem = this.entityKey.toItem();
 
-                widgets.Pattern.create(tileDocument.getPattern())
+                widgets.Pattern.create(tileItem.getPatternKey())
                     .setChildName('pattern')
-                    .setShift(tileDocument.getOrientationShift())
+                    .setShift(tileItem.getOrientationShift())
                     .addToParent(this);
             }
         })
         .addMethods(/** @lends app.widgets.Tile# */{
             /**
-             * @param {bookworm.DocumentKey} tileKey
+             * @param {bookworm.ItemKey} tileKey
              * @ignore
              */
             init: function (tileKey) {
-                dessert.isDocumentKey(tileKey, "Invalid tile key");
+                dessert.isItemKey(tileKey, "Invalid tile key");
 
                 base.init.call(this);
                 bookworm.EntityBound.init.call(this);
@@ -80,11 +83,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 this._updateElevation();
                 this._updatePattern();
 
-                this
-                    .bindToEntityNodeChange(this.entityKey.getFieldKey('pattern'), 'onPatternChange')
-                    .bindToEntityNodeChange(this.entityKey.getFieldKey('elevation'), 'onElevationChange')
-                    .bindToEntityNodeChange(this.entityKey.getFieldKey('orientation'), 'onOrientationChange')
-                    .bindToEntityNodeChange(this.entityKey, 'onDocumentReplace');
+                this.bindToEntityChange(this.entityKey, 'onTileChange');
             },
 
             /** @ignore */
@@ -117,22 +116,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             },
 
             /** @ignore */
-            onPatternChange: function () {
-                this._updatePattern();
-            },
-
-            /** @ignore */
-            onElevationChange: function () {
-                this._updateElevation();
-            },
-
-            /** @ignore */
-            onOrientationChange: function () {
-                this._updatePattern();
-            },
-
-            /** @ignore */
-            onDocumentReplace: function () {
+            onTileChange: function () {
                 this._updatePattern();
                 this._updateElevation();
             },
@@ -142,22 +126,22 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
              * @ignore
              */
             onClick: function (event) {
-                var tileDocument = this.entityKey.toDocument();
+                var tileItem = this.entityKey.toItem();
 
                 if (event && event.ctrlKey || event.metaKey) {
                     if (event.shiftKey) {
-                        tileDocument.rotateCounterClockwise();
+                        tileItem.rotateCounterClockwise();
                     } else {
-                        tileDocument.rotateClockwise();
+                        tileItem.rotateClockwise();
                     }
                 } else if (event && event.altKey) {
                     if (event.shiftKey) {
-                        tileDocument.lowerElevation();
+                        tileItem.lowerElevation();
                     } else {
-                        tileDocument.raiseElevation();
+                        tileItem.raiseElevation();
                     }
                 } else {
-                    tileDocument.setPattern('preferences/main'.toDocument().getPattern());
+                    tileItem.setPatternKey('preferences/main'.toDocument().getPatternKey());
                 }
             },
 

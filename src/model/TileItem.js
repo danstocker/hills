@@ -1,14 +1,15 @@
 /*global dessert, troop, sntls, evan, bookworm, shoeshine, app */
-troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
+troop.postpone(app.model, 'TileItem', function () {
     "use strict";
 
-    var base = bookworm.Document,
+    var base = bookworm.Item,
         self = base.extend();
 
     /**
-     * @name app.model.TileDocument.create
+     * @name app.model.TileItem.create
      * @function
-     * @returns {app.model.TileDocument}
+     * @param {bookworm.ItemKey} tileKey
+     * @returns {app.model.TileItem}
      */
 
     var orientationToSymbol = sntls.StringDictionary.create({
@@ -25,10 +26,10 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
 
     /**
      * @class
-     * @extends bookworm.Document
+     * @extends bookworm.Item
      */
-    app.model.TileDocument = self
-        .addConstants(/** @lends app.model.TileDocument */{
+    app.model.TileItem = self
+        .addConstants(/** @lends app.model.TileItem */{
             /**
              * @type {sntls.StringDictionary}
              * @constant
@@ -53,34 +54,19 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
              */
             symbolToElevation: elevationToSymbol.reverse()
         })
-        .addMethods(/** @lends app.model.TileDocument# */{
+        .addMethods(/** @lends app.model.TileItem# */{
             /**
              * @param {bookworm.DocumentKey} patternKey
-             * @returns {app.model.TileDocument}
+             * @returns {app.model.TileItem}
              */
-            setPattern: function (patternKey) {
-                this.getField('pattern')
-                    .setValue(patternKey.toString());
-                return this;
-            },
-
-            /** @returns {app.model.TileDocument} */
-            rotateClockwise: function () {
-                var currentOrientation = this.getOrientation();
-                this.setOrientation((currentOrientation + 90) % 360);
-                return this;
-            },
-
-            /** @returns {app.model.TileDocument} */
-            rotateCounterClockwise: function () {
-                var currentOrientation = this.getOrientation();
-                this.setOrientation((currentOrientation - 90) % 360);
+            setPatternKey: function (patternKey) {
+                this.setAttribute('pattern', patternKey.toString());
                 return this;
             },
 
             /** @returns {bookworm.DocumentKey} */
-            getPattern: function () {
-                var patternRef = this.getField('pattern').getValue();
+            getPatternKey: function () {
+                var patternRef = this.getAttribute('pattern');
                 return patternRef ?
                     patternRef.toDocumentKey() :
                     undefined;
@@ -88,15 +74,14 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
 
             /**
              * @param {number} elevation 0, 1, 2
-             * @returns {app.model.TileDocument}
+             * @returns {app.model.TileItem}
              */
             setElevation: function (elevation) {
-                this.getField('elevation')
-                    .setValue(elevation);
+                this.setAttribute('elevation', elevation);
                 return this;
             },
 
-            /** @returns {app.model.TileDocument} */
+            /** @returns {app.model.TileItem} */
             raiseElevation: function () {
                 var currentElevation = this.getElevation();
 
@@ -107,7 +92,7 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
                 return this;
             },
 
-            /** @returns {app.model.TileDocument} */
+            /** @returns {app.model.TileItem} */
             lowerElevation: function () {
                 var tileDocument = this.entityKey.toDocument(),
                     currentElevation = tileDocument.getElevation();
@@ -121,22 +106,21 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
 
             /** @returns {number} */
             getElevation: function () {
-                return this.getField('elevation').getValue() || 0;
+                return this.getAttribute('elevation') || 0;
             },
 
             /**
              * @param {number} orientation Either 0, 90, 180, or 270.
-             * @returns {app.model.TileDocument}
+             * @returns {app.model.TileItem}
              */
             setOrientation: function (orientation) {
-                this.getField('orientation')
-                    .setValue(orientation);
+                this.setAttribute('orientation', orientation);
                 return this;
             },
 
             /** @returns {number} Either 0, 90, 180, or 270. Default is 0. */
             getOrientation: function () {
-                return this.getField('orientation').getValue() || 0;
+                return this.getAttribute('orientation') || 0;
             },
 
             /** @returns {number} */
@@ -144,40 +128,31 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
                 return this.getOrientation() / 90;
             },
 
-            /**
-             * @param {string} mapString
-             * @returns {app.model.TileDocument}
-             * @memberOf app.model.TileDocument
-             */
-            createTileDocumentsFromString: function (mapString) {
-                var patternsDocument = 'patterns/all'.toDocument();
+            /** @returns {app.model.TileItem} */
+            rotateClockwise: function () {
+                var currentOrientation = this.getOrientation();
+                this.setOrientation((currentOrientation + 90) % 360);
+                return this;
+            },
 
-                mapString.split('')
-                    .toCollection()
-                    .forEachItem(function (patternSymbol, tileIndex) {
-                        var patternKey = patternsDocument.getPatternBySymbol(patternSymbol);
-
-                        ['tile', tileIndex].toDocument()
-                            .setPattern(patternKey);
-                    });
-
+            /** @returns {app.model.TileItem} */
+            rotateCounterClockwise: function () {
+                var currentOrientation = this.getOrientation();
+                this.setOrientation((currentOrientation - 90) % 360);
                 return this;
             },
 
             /**
              * @param {string} serializedTile Tile in string format.
-             * @returns {app.model.TileDocument}
+             * @returns {app.model.TileItem}
              */
             fromString: function (serializedTile) {
-                var patternSymbol = serializedTile[0],
-                    orientationSymbol = serializedTile[1],
-                    elevationSymbol = serializedTile[2],
-                    patternKey = 'patterns/all'.toDocument().getPatternBySymbol(patternSymbol),
-                    orientation = this.symbolToOrientation.getItem(orientationSymbol),
-                    elevation = this.symbolToElevation.getItem(elevationSymbol);
+                var patternKey = 'patterns/all'.toDocument().getPatternKeyBySymbol(serializedTile[0]),
+                    orientation = this.symbolToOrientation.getItem(serializedTile[1]),
+                    elevation = this.symbolToElevation.getItem(serializedTile[2]);
 
                 this
-                    .setPattern(patternKey)
+                    .setPatternKey(patternKey)
                     .setOrientation(parseInt(orientation, 10))
                     .setElevation(parseInt(elevation, 10));
 
@@ -187,7 +162,7 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
             /** @returns {string} */
             toString: function () {
                 return [
-                    this.getPattern().toDocument().getSymbol(),
+                    this.getPatternKey().toDocument().getSymbol(),
                     this.orientationToSymbol.getItem(this.getOrientation()),
                     this.elevationToSymbol.getItem(this.getElevation())
                 ].join('');
@@ -195,12 +170,13 @@ troop.postpone(app.model, 'TileDocument', function (/**app.model*/model) {
         });
 });
 
-troop.amendPostponed(bookworm, 'Document', function (ns, className, /**app.model*/model) {
+troop.amendPostponed(bookworm, 'Item', function (ns, className, /**app.model*/model) {
     "use strict";
 
-    bookworm.Document
-        .addSurrogate(model, 'TileDocument', function (documentKey) {
-            return documentKey.documentType === 'tile';
+    bookworm.Item
+        .addSurrogate(model, 'TileItem', function (itemKey) {
+            return  itemKey.fieldName === 'tiles' &&
+                    itemKey.documentKey.documentType === 'board';
         });
 }, app.model);
 

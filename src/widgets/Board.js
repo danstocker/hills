@@ -37,11 +37,10 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
                     tileHeight = widgets.Tile.TILE_HEIGHT;
 
                 boardDocument
-                    .getTilesAsCollection()
+                    .getTileKeysAsCollection()
                     .createWithEachItem(widgets.Tile)
-                    .forEachItem(function (/**app.widgets.Tile*/tile, tileRef) {
-                        var tileIndex = tileRef.toDocumentKey().documentId,
-                            columnIndex = tileIndex % boardWidth,
+                    .forEachItem(function (/**app.widgets.Tile*/tile, tileIndex) {
+                        var columnIndex = tileIndex % boardWidth,
                             rowIndex = Math.floor(tileIndex / boardWidth),
                             isOdd = rowIndex % 2,
                             horizontalShift = tileWidth / 4 * (isOdd ? 1 : -1);

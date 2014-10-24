@@ -9,6 +9,7 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
     /**
      * @name app.widgets.Pattern.create
      * @function
+     * @param {bookworm.DocumentKey} patternKey
      * @returns {app.widgets.Pattern}
      */
 

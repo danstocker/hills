@@ -54,7 +54,7 @@ troop.postpone(app.model, 'PatternsDocument', function () {
              * @param {string} symbol
              * @returns {bookworm.DocumentKey}
              */
-            getPatternBySymbol: function (symbol) {
+            getPatternKeyBySymbol: function (symbol) {
                 var patternRef = bookworm.index
                     .getNode(['patterns', 'by-symbol', symbol].toPath());
 

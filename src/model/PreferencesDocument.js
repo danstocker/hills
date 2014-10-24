@@ -18,7 +18,7 @@ troop.postpone(app.model, 'PreferencesDocument', function () {
     app.model.PreferencesDocument = self
         .addMethods(/** @lends app.model.PreferencesDocument# */{
             /** @returns {bookworm.DocumentKey} */
-            getPattern: function () {
+            getPatternKey: function () {
                 var patternRef = this.getField('pattern').getValue();
                 return patternRef ?
                     patternRef.toDocumentKey():
