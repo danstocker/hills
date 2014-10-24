@@ -56,6 +56,23 @@ troop.postpone(app.model, 'TileItem', function () {
         })
         .addMethods(/** @lends app.model.TileItem# */{
             /**
+             * @param {string} serializedTile Tile in string format.
+             * @returns {object}
+             * @memberOf app.model.TileItem
+             */
+            createTileItemNode: function (serializedTile) {
+                var patternKey = 'patterns/all'.toDocument().getPatternKeyBySymbol(serializedTile[0]),
+                    orientation = this.symbolToOrientation.getItem(serializedTile[1]),
+                    elevation = this.symbolToElevation.getItem(serializedTile[2]);
+
+                return {
+                    pattern    : patternKey.toString(),
+                    orientation: orientation,
+                    elevation  : elevation
+                };
+            },
+
+            /**
              * @param {bookworm.DocumentKey} patternKey
              * @returns {app.model.TileItem}
              */
@@ -139,23 +156,6 @@ troop.postpone(app.model, 'TileItem', function () {
             rotateCounterClockwise: function () {
                 var currentOrientation = this.getOrientation();
                 this.setOrientation((currentOrientation - 90) % 360);
-                return this;
-            },
-
-            /**
-             * @param {string} serializedTile Tile in string format.
-             * @returns {app.model.TileItem}
-             */
-            fromString: function (serializedTile) {
-                var patternKey = 'patterns/all'.toDocument().getPatternKeyBySymbol(serializedTile[0]),
-                    orientation = this.symbolToOrientation.getItem(serializedTile[1]),
-                    elevation = this.symbolToElevation.getItem(serializedTile[2]);
-
-                this
-                    .setPatternKey(patternKey)
-                    .setOrientation(parseInt(orientation, 10))
-                    .setElevation(parseInt(elevation, 10));
-
                 return this;
             },
 

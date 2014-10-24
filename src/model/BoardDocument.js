@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, evan, bookworm, shoeshine, app */
-troop.postpone(app.model, 'BoardDocument', function () {
+troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
     "use strict";
 
     var base = bookworm.Document,
@@ -19,6 +19,15 @@ troop.postpone(app.model, 'BoardDocument', function () {
     app.model.BoardDocument = self
         .setInstanceMapper(function (boardKey) {
             return boardKey.toString();
+        })
+        .addPrivateMethods(/** @lends app.model.BoardDocument# */{
+            /**
+             * @param {object} tilesNode
+             * @private
+             */
+            _setTiles: function (tilesNode) {
+                this.getField('tiles').setValue(tilesNode);
+            }
         })
         .addMethods(/** @lends app.model.BoardDocument# */{
             /**
@@ -72,10 +81,10 @@ troop.postpone(app.model, 'BoardDocument', function () {
 
                 // writing tile items
                 serializedTiles
-                    .forEachItem(function (serializedTile, tileIndex) {
-                        tilesKey.getItemKey(tileIndex).toItem()
-                            .fromString(serializedTile);
-                    });
+                    .mapValues(function (serializedTile) {
+                        return model.TileItem.createTileItemNode(serializedTile);
+                    })
+                    .passItemsTo(this._setTiles, this);
 
                 // writing dimensions
                 this
