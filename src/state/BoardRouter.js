@@ -12,7 +12,7 @@ troop.postpone(app.state, 'BoardRouter', function () {
     app.state.BoardRouter = self
         .addConstants(/** @lends app.state.BoardRouter */{
             /** @constant */
-            DEFAULT_ROUTE: 'LQPg+qHpPXUNo+TUvczase33BOR+xhJ5Zlp1FNVtD9TdLjrzbnH37vXfPfkMEiBY4eNETpU2ZPkyFcxSuVqlG1ZvVbdO/dsN6jB42dMWTV89cs37dx7ecOXT1x/de3Pz7+9+gQHB/qFBYSHhUYRAAA=='
+            DEFAULT_ROUTE: 'LQPg%2BqHpPXUNo%2BTUvczase33BOR%2BxhJ5Zlp1FNVtD9TdLjrzbnH37vXfPfkMEiBY4eNETpU2ZPkyFcxSuVqlG1ZvVbdO%2FdsN6jB42dMWTV89cs37dx7ecOXT1x%2Fde3Pz7%2B9%2BgQHB%2FqFBYSHhUYRAAA%3D%3D'
         })
         .addMethods(/** @lends app.state.BoardRouter */{
             /** @param {flock.ChangeEvent} event */
@@ -25,6 +25,7 @@ troop.postpone(app.state, 'BoardRouter', function () {
                     // serializing & compressing board
                     .toString()
                     .toCompressed()
+                    .toUriComponentEncoded()
 
                     // creating route based on board
                     .toRoute()
@@ -47,6 +48,7 @@ troop.postpone(app.state, 'BoardRouter', function () {
                     } else if (!beforeRoute || beforeRoute.equals(emptyRoute)) {
                         // after route is not empty, but before route is
                         afterRoute.toString()
+                            .toUriComponentDecoded()
                             .toBoardDocumentFromCompressed();
                     }
                 }
