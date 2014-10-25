@@ -19,6 +19,13 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
      * @extends candystore.EntityWidget
      */
     app.widgets.Pattern = self
+        .addConstants(/** @lends app.widgets.Pattern */{
+            /** @constant */
+            PATTERN_TOP_OFFSET: -20,
+
+            /** @constant */
+            PATTERN_LEFT_OFFSET: 0
+        })
         .addMethods(/** @lends app.widgets.Pattern# */{
             /**
              * @param {bookworm.DocumentKey} patternKey
@@ -39,8 +46,8 @@ troop.postpone(app.widgets, 'Pattern', function (/**app.widgets*/widgets, classN
                 var patternDocument = this.entityKey.toDocument();
 
                 this.setInlineStyle('background-position', [
-                    patternDocument.getBackgroundLeft() + patternDocument.getHorizontalOffset(shift) + 'px',
-                    patternDocument.getBackgroundTop() + 'px'
+                    this.PATTERN_LEFT_OFFSET + patternDocument.getBackgroundLeft() + patternDocument.getHorizontalOffset(shift) + 'px',
+                    this.PATTERN_TOP_OFFSET + patternDocument.getBackgroundTop() + 'px'
                 ].join(' '));
 
                 return this;

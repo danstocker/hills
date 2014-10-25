@@ -28,8 +28,15 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
             _updateTiles: function () {
                 var boardDocument = this.entityKey.toDocument(),
                     boardWidth = boardDocument.getWidth(),
+                    boardHeight = boardDocument.getHeight(),
                     tileWidth = widgets.Tile.TILE_WIDTH,
                     tileHeight = widgets.Tile.TILE_HEIGHT;
+
+                this
+                    .setInlineStyle('left', -tileWidth / 2 + 'px')
+                    .setInlineStyle('top', -tileHeight / 2 + 'px')
+                    .setInlineStyle('width', tileWidth * boardWidth + 'px')
+                    .setInlineStyle('height', tileHeight / 2 * (boardHeight - 0.5) + 'px');
 
                 boardDocument
                     .getTileKeysAsCollection()
@@ -40,10 +47,10 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
                         var columnIndex = tileIndex % boardWidth,
                             rowIndex = Math.floor(tileIndex / boardWidth),
                             isOdd = rowIndex % 2,
-                            horizontalShift = tileWidth / 4 * (isOdd ? 1 : -1);
+                            horizontalShift = tileWidth / 2 * (isOdd ? 1 : 0);
 
                         tile
-                            .setChildName('tile-' + tileIndex)
+                            .setChildName('tile-' + candystore.StringUtils.padLeft(tileIndex, 5))
                             .setInlineStyle('z-index', Math.floor(tileIndex / boardWidth))
                             .setInlineStyle('left', columnIndex * tileWidth + horizontalShift + 'px')
                             .setInlineStyle('top', rowIndex * tileHeight / 2 + 'px');

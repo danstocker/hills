@@ -1,6 +1,6 @@
 .Pattern {
-    width: 150px;
-    height: 100px;
+    width: 100px;
+    height: 80px;
     background: url('../../images/hills-sprite.png');
     overflow: hidden;
 }
