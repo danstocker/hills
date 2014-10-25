@@ -82,7 +82,7 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
                 // writing dimensions
                 this
                     .setWidth(width)
-                    .setHeight(width * 2);
+                    .setHeight(width * 4);
 
                 // writing tile items
                 serializedTiles
