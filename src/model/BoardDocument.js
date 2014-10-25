@@ -109,18 +109,39 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
                     .join('"+\n"') + '\"';
             },
 
-            /** @returns {string} */
+            /**
+             * Uses loop and direct access to index to boost up conversion.
+             * Functional equivalent commented out.
+             * @returns {string}
+             */
             toString: function () {
-                var tilesField = this.getField('tiles');
+                var tilesField = this.getField('tiles'),
+                    tilesNode = tilesField.getValue(),
+                    tileIndices = Object.keys(tilesNode),
+                    TileItem = model.TileItem,
+                    byReferenceLookup = bookworm.index.items.pattern['by-reference'],
+                    i, tileIndex, tileNode,
+                    result = [];
 
-                return this.getField('tiles')
-                    .getItemsAsCollection()
-                    .mapValues(function (tileNode, tileIndex) {
-                        return tilesField.getItem(tileIndex).toString();
-                    })
-                    .callOnEachItem('toString')
-                    .getValues()
-                    .join('');
+                for (i = 0; i < tileIndices.length; i++) {
+                    tileIndex = tileIndices[i];
+                    tileNode = tilesNode[tileIndex];
+                    result.push(TileItem.getStringFromTileNode(
+                        byReferenceLookup[tileNode.pattern],
+                        tileNode.orientation,
+                        tileNode.elevation));
+                }
+
+                return result.join('');
+
+                //                return this.getField('tiles')
+                //                    .getItemsAsCollection()
+                //                    .mapValues(function (tileNode, tileIndex) {
+                //                        return tilesField.getItem(tileIndex).toString();
+                //                    })
+                //                    .callOnEachItem('toString')
+                //                    .getValues()
+                //                    .join('');
             }
         });
 });

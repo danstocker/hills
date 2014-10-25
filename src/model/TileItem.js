@@ -158,6 +158,21 @@ troop.postpone(app.model, 'TileItem', function () {
                 return this;
             },
 
+            /**
+             * @param {string} symbol
+             * @param {number} orientation
+             * @param {number} elevation
+             * @returns {string}
+             * @memberOf app.model.TileItem
+             */
+            getStringFromTileNode: function (symbol, orientation, elevation) {
+                return [
+                    symbol,
+                    this.orientationToSymbol.items[orientation],
+                    this.elevationToSymbol.items[elevation]
+                ].join('');
+            },
+
             /** @returns {string} */
             toString: function () {
                 return [

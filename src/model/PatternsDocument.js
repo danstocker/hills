@@ -20,14 +20,9 @@ troop.postpone(app.model, 'PatternsDocument', function () {
         .setInstanceMapper(function (patternsKey) {
             return patternsKey.toString();
         })
-        .addMethods(/** @lends app.model.PatternsDocument# */{
-            /**
-             * @param {bookworm.DocumentKey} patternsKey
-             * @ignore
-             */
-            init: function (patternsKey) {
-                base.init.call(this, patternsKey);
-
+        .addPrivateMethods(/** @lends app.model.PatternsDocument# */{
+            /** @private */
+            _addBySymbolLookup: function () {
                 var symbolToPatternRef = this.getField('patterns')
                     .getItemsAsCollection()
                     .mapValues(function (patternOrder, patternRef) {
@@ -38,7 +33,31 @@ troop.postpone(app.model, 'PatternsDocument', function () {
                     .items;
 
                 bookworm.index
-                    .setNode('patterns>by-symbol'.toPath(), symbolToPatternRef);
+                    .setNode('pattern>by-symbol'.toPath(), symbolToPatternRef);
+            },
+
+            /** @private */
+            _addByReferenceLookup: function () {
+                var patternRefToSymbol = this.getField('patterns')
+                    .getItemsAsCollection()
+                    .mapValues(function (patternOrder, patternRef) {
+                        return patternRef.toDocument().getSymbol();
+                    })
+                    .items;
+
+                bookworm.index
+                    .setNode('pattern>by-reference'.toPath(), patternRefToSymbol);
+            }
+        })
+        .addMethods(/** @lends app.model.PatternsDocument# */{
+            /**
+             * @param {bookworm.DocumentKey} patternsKey
+             * @ignore
+             */
+            init: function (patternsKey) {
+                base.init.call(this, patternsKey);
+                this._addBySymbolLookup();
+                this._addByReferenceLookup();
             },
 
             /** @returns {sntls.Hash} */
@@ -56,7 +75,7 @@ troop.postpone(app.model, 'PatternsDocument', function () {
              */
             getPatternKeyBySymbol: function (symbol) {
                 var patternRef = bookworm.index
-                    .getNode(['patterns', 'by-symbol', symbol].toPath());
+                    .getNode(['pattern', 'by-symbol', symbol].toPath());
 
                 return patternRef ?
                     patternRef.toDocumentKey() :
