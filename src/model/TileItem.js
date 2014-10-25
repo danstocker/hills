@@ -154,7 +154,7 @@ troop.postpone(app.model, 'TileItem', function () {
             /** @returns {app.model.TileItem} */
             rotateCounterClockwise: function () {
                 var currentOrientation = this.getOrientation();
-                this.setOrientation((currentOrientation - 90) % 360);
+                this.setOrientation((currentOrientation + 270) % 360);
                 return this;
             },
 
