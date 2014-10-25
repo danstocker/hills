@@ -5,6 +5,10 @@ Hills - Isometric game map editor
 
 Hills is a very simple app for editing an isometric game map of 16x64 tiles, that demonstrates how to build a front end app with a stack of libraries made up of [candystore](https://github.com/danstocker/candystore), [shoeshine](https://github.com/danstocker/shoeshine), [bookworm](https://github.com/danstocker/bookworm), [milkman](https://github.com/danstocker/milkman), and their dependencies ([troop](https://github.com/danstocker/troop), [sntls](https://github.com/danstocker/sntls), [evan](https://github.com/danstocker/evan), and [flock](https://github.com/danstocker/flock)).
 
+The app is available here: [http://danstocker.github.io/hills](http://danstocker.github.io/hills)
+
+![Snapshot](https://dl.dropboxusercontent.com/u/9258903/Hills/hills-snapshot.png)
+
 Usage
 -----
 
