@@ -73,11 +73,16 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
              * @param {string} mapString
              * @returns {app.model.BoardDocument}
              */
-            importMap: function (mapString) {
+            fromString: function (mapString) {
                 var tilesKey = this.entityKey.getFieldKey('tiles'),
                     serializedTiles = mapString.match(/.{1,3}/g)
                         .toCollection(),
                     width = Math.sqrt(serializedTiles.getKeyCount() / 4);
+
+                // writing dimensions
+                this
+                    .setWidth(width)
+                    .setHeight(width * 2);
 
                 // writing tile items
                 serializedTiles
@@ -86,12 +91,15 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
                     })
                     .passItemsTo(this._setTiles, this);
 
-                // writing dimensions
-                this
-                    .setWidth(width)
-                    .setHeight(width * 2);
-
                 return this;
+            },
+
+            /**
+             * @param {string} compressedMapString
+             * @returns {app.model.BoardDocument}
+             */
+            fromCompressedString: function (compressedMapString) {
+                return this.fromString(compressedMapString.toDecompressed());
             },
 
             /** @returns {string} */
@@ -138,7 +146,16 @@ troop.amendPostponed(bookworm, 'Document', function (ns, className, /**app.model
              */
             toBoardDocument: function (boardId) {
                 return ['board', boardId || 'main'].toDocument()
-                    .importMap(this);
+                    .fromString(this.valueOf());
+            },
+
+            /**
+             * @param {string} [boardId]
+             * @returns {app.model.BoardDocument}
+             */
+            toBoardDocumentFromCompressed: function (boardId) {
+                return ['board', boardId || 'main'].toDocument()
+                    .fromCompressedString(this.valueOf());
             }
         },
         false, false, false
