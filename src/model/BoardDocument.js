@@ -103,11 +103,13 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
 
             /** @returns {string} */
             toString: function () {
+                var tilesField = this.getField('tiles');
+
                 return this.getField('tiles')
                     .getItemsAsCollection()
-                    .getKeysAsHash()
-                    .toCollection()
-                    .callOnEachItem('toDocument')
+                    .mapValues(function (tileNode, tileIndex) {
+                        return tilesField.getItem(tileIndex).toString();
+                    })
                     .callOnEachItem('toString')
                     .getValues()
                     .join('');

@@ -62,8 +62,8 @@ troop.postpone(app.model, 'TileItem', function () {
              */
             createTileItemNode: function (serializedTile) {
                 var patternKey = 'patterns/all'.toDocument().getPatternKeyBySymbol(serializedTile[0]),
-                    orientation = this.symbolToOrientation.getItem(serializedTile[1]),
-                    elevation = this.symbolToElevation.getItem(serializedTile[2]);
+                    orientation = parseInt(this.symbolToOrientation.getItem(serializedTile[1]), 10),
+                    elevation = parseInt(this.symbolToElevation.getItem(serializedTile[2]), 10);
 
                 return {
                     pattern    : patternKey.toString(),
@@ -111,8 +111,7 @@ troop.postpone(app.model, 'TileItem', function () {
 
             /** @returns {app.model.TileItem} */
             lowerElevation: function () {
-                var tileDocument = this.entityKey.toDocument(),
-                    currentElevation = tileDocument.getElevation();
+                var currentElevation = this.getElevation();
 
                 if (currentElevation > 0) {
                     this.setElevation(currentElevation - 1);
