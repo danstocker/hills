@@ -74,6 +74,9 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 bookworm.EntityBound.init.call(this);
                 candystore.EntityWidget.init.call(this, tileKey);
                 candystore.Highlightable.init.call(this);
+
+                this._updateElevation();
+                this._updatePattern();
             },
 
             /** @ignore */

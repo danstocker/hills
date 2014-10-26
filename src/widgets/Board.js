@@ -26,11 +26,13 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
         .addPrivateMethods(/** @lends app.widgets.Board# */{
             /** @private */
             _updateTiles: function () {
-                var boardDocument = this.entityKey.toDocument(),
+                var that = this,
+                    boardDocument = this.entityKey.toDocument(),
                     boardWidth = boardDocument.getWidth(),
                     boardHeight = boardDocument.getHeight(),
                     tileWidth = widgets.Tile.TILE_WIDTH,
-                    tileHeight = widgets.Tile.TILE_HEIGHT;
+                    tileHeight = widgets.Tile.TILE_HEIGHT,
+                    Progenitor = shoeshine.Progenitor;
 
                 this
                     .setInlineStyle('left', -tileWidth / 2 + 'px')
@@ -54,9 +56,11 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
                             .setInlineStyle('z-index', Math.floor(tileIndex / boardWidth))
                             .setInlineStyle('left', columnIndex * tileWidth + horizontalShift + 'px')
                             .setInlineStyle('top', rowIndex * tileHeight / 2 + 'px');
-                    })
-                    .toWidgetCollection()
-                    .addToParent(this);
+
+                        Progenitor.addToParent.call(tile, that);
+                    });
+
+                this.reRender();
             }
         })
         .addMethods(/** @lends app.widgets.Board# */{
