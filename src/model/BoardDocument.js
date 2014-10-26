@@ -123,11 +123,7 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
                     .join('"+\n"') + '\"';
             },
 
-            /**
-             * Uses loop and direct access to index to boost up conversion.
-             * Functional equivalent commented out.
-             * @returns {string}
-             */
+            /** @returns {string} */
             toString: function () {
                 var tilesField = this.getField('tiles'),
                     tilesNode = tilesField.getValue(),
@@ -147,15 +143,6 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
                 }
 
                 return result.join('');
-
-                //                return this.getField('tiles')
-                //                    .getItemsAsCollection()
-                //                    .mapValues(function (tileNode, tileIndex) {
-                //                        return tilesField.getItem(tileIndex).toString();
-                //                    })
-                //                    .callOnEachItem('toString')
-                //                    .getValues()
-                //                    .join('');
             }
         });
 });
