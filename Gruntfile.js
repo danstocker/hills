@@ -2,7 +2,8 @@
 module.exports = function (grunt) {
     "use strict";
 
-    var outPath = './out/',
+    var prodPath = './out-prod/',
+        devPath = './out-dev/',
         grocer = require('grocer'),
         manifestNode = grunt.file.readJSON('./build/manifest.json'),
         manifest = grocer.Manifest.create(manifestNode),
@@ -11,14 +12,60 @@ module.exports = function (grunt) {
     grocer.GruntProxy.create()
         .setGruntObject(grunt);
 
+    /**
+     * @param {string} assetType
+     * @returns {Array}
+     */
+    function getCopySrcDestPairs(assetType) {
+        return manifest.getAssets(assetType)
+            .getFlatAssetFileNameLookup()
+            .toCollection()
+            .mapValues(function (flatFileName, assetPath) {
+                return {
+                    src : assetPath,
+                    dest: devPath + flatFileName
+                };
+            })
+            .getValues();
+    }
+
+    /**
+     * @param {string} assetType
+     * @returns {Array}
+     */
+    function getMinificationSrcDestPairs(assetType) {
+        return manifest.modules
+            .filterBySelector(function (/**grocer.Module*/module) {
+                return !!module.getAssets(assetType);
+            })
+            .mapKeys(function (/**grocer.Module*/module) {
+                return prodPath + module.toAsset(assetType).assetName;
+            })
+            .mapValues(function (/**grocer.Module*/module) {
+                return module.getAssets(assetType).getAssetNames();
+            })
+            .items;
+    }
+
     // copying static assets
     'copy'
         .toMultiTask({
+            development: {
+                files: getCopySrcDestPairs('js')
+                    .concat(getCopySrcDestPairs('css'))
+                    .concat([
+                        {
+                            src : [ 'images/**' ],
+                            dest: devPath
+                        }
+                    ])
+            },
+
             production: {
                 files: [
                     {
                         src : [ 'images/**' ],
-                        dest: outPath
+                        dest: prodPath
                     }
                 ]
             }
@@ -35,8 +82,8 @@ module.exports = function (grunt) {
                         {
                             match      : /<!--ASSETS-->/,
                             replacement: [
-                                manifest.getAssets('js'),
-                                manifest.getAssets('css')
+                                manifest.getFlatAssets('js'),
+                                manifest.getFlatAssets('css')
                             ].join('\n')
                         }
                     ]
@@ -47,7 +94,7 @@ module.exports = function (grunt) {
                         expand : true,
                         flatten: true,
                         src    : ['./build/index.html'],
-                        dest   : './'
+                        dest   : devPath
                     }
                 ]
             },
@@ -70,7 +117,7 @@ module.exports = function (grunt) {
                         expand : true,
                         flatten: true,
                         src    : ['./build/index.html'],
-                        dest   : outPath
+                        dest   : prodPath
                     }
                 ]
             }
@@ -82,17 +129,7 @@ module.exports = function (grunt) {
     'uglify'
         .toMultiTask({
             production: {
-                files: manifest.modules
-                    .filterBySelector(function (/**grocer.Module*/module) {
-                        return !!module.getAssets('js');
-                    })
-                    .mapKeys(function (/**grocer.Module*/module) {
-                        return outPath + module.toAsset('js').assetName;
-                    })
-                    .mapValues(function (/**grocer.Module*/module) {
-                        return module.getAssets('js').getAssetNames();
-                    })
-                    .items
+                files: getMinificationSrcDestPairs('js')
             }
         })
         .setPackageName('grunt-contrib-uglify')
@@ -102,17 +139,7 @@ module.exports = function (grunt) {
     'cssmin'
         .toMultiTask({
             production: {
-                files: manifest.modules
-                    .filterBySelector(function (/**grocer.Module*/module) {
-                        return !!module.getAssets('css');
-                    })
-                    .mapKeys(function (/**grocer.Module*/module) {
-                        return outPath + module.toAsset('css').assetName;
-                    })
-                    .mapValues(function (/**grocer.Module*/module) {
-                        return module.getAssets('css').getAssetNames();
-                    })
-                    .items
+                files: getMinificationSrcDestPairs('css')
             }
         })
         .setPackageName('grunt-contrib-cssmin')
