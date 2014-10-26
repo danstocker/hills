@@ -1,102 +1,16 @@
 <html>
 <head>
-    <title>Isometric Map Editor</title>
+    <title>Hills</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
-    <script src="node_modules/dessert/dessert.js"></script>
-    <script src="node_modules/troop/troop.js"></script>
-    <script src="node_modules/sntls/sntls.js"></script>
-    <script src="node_modules/evan/evan.js"></script>
-    <script src="node_modules/flock/flock.js"></script>
-    <script src="node_modules/bookworm/bookworm.js"></script>
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="node_modules/shoeshine/shoeshine.js"></script>
-    <script src="node_modules/poodle/poodle.js"></script>
-    <script src="node_modules/candystore/candystore.js"></script>
-    <link rel="stylesheet" href="node_modules/candystore/candystore.css">
-
-    <script src="src/app.js"></script>
-    <script src="src/cache/config.js"></script>
-    <script src="src/model/BoardDocument.js"></script>
-    <script src="src/model/TileDocument.js"></script>
-    <script src="src/widgets/Tile.js"></script>
-    <script src="src/widgets/Board.js"></script>
-    <script src="src/widgets/Game.js"></script>
-    <link rel="stylesheet" href="src/app.css">
-    <link rel="stylesheet" href="src/widgets/Tile.css">
-    <link rel="stylesheet" href="src/widgets/Board.css">
+    <script src="libraries.js"></script>
+<script src="application.js"></script>
+<link rel="stylesheet" href="libraries.css" />
+<link rel="stylesheet" href="application.css" />
 
     <script>
         $(function () {
-            [
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaa"
-            ].join('').toBoardDocument('main');
-
-            app.widgets.Game.create()
+            app.widgets.MapPage.create()
                     .setRootWidget();
         });
     </script>
