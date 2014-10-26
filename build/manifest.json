@@ -1,0 +1,58 @@
+{
+    "libraries": {
+        "assets": {
+            "js" : [
+                "node_modules/lz-string/libs/lz-string-1.3.3.js",
+                "node_modules/dessert/dessert.js",
+                "node_modules/troop/troop.js",
+                "node_modules/sntls/sntls.js",
+                "node_modules/evan/evan.js",
+                "node_modules/flock/flock.js",
+                "node_modules/bookworm/bookworm.js",
+                "node_modules/jquery/dist/jquery.js",
+                "node_modules/shoeshine/shoeshine.js",
+                "node_modules/poodle/poodle.js",
+                "lib/jquery-ui.js",
+                "node_modules/candystore/candystore.js",
+                "node_modules/milkman/milkman.js"
+            ],
+            "css": [
+                "node_modules/candystore/candystore.css"
+            ]
+        }
+    },
+
+    "application": {
+        "assets": {
+            "js" : [
+                "src/app.js",
+                "src/utils/StringUtils.js",
+                "src/cache/config.js",
+                "src/cache/entities.js",
+                "src/state/BoardRouter.js",
+                "src/model/PatternDocument.js",
+                "src/model/PatternsDocument.js",
+                "src/model/BoardDocument.js",
+                "src/model/TileItem.js",
+                "src/model/PreferencesDocument.js",
+                "src/widgets/Pattern.js",
+                "src/widgets/Tile.js",
+                "src/widgets/Board.js",
+                "src/widgets/PatternOption.js",
+                "src/widgets/PatternList.js",
+                "src/widgets/PatternDropdownButton.js",
+                "src/widgets/MapPage.js"
+            ],
+            "css": [
+                "src/app.css",
+                "src/widgets/Pattern.css",
+                "src/widgets/Tile.css",
+                "src/widgets/Board.css",
+                "src/widgets/PatternOption.css",
+                "src/widgets/PatternList.css",
+                "src/widgets/PatternDropdownButton.css",
+                "src/widgets/MapPage.css"
+            ]
+        }
+    }
+}

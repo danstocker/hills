@@ -1,8 +1,8 @@
 {
-    "name"        : "hills",
-    "version"     : "0.1.0",
-    "description" : "Isometric game map editor, demo app for candystore, shoeshine, bookworm, & milkman",
-    "dependencies": {
+    "name"           : "hills",
+    "version"        : "0.1.0",
+    "description"    : "Isometric game map editor, demo app for candystore, shoeshine, bookworm, & milkman",
+    "dependencies"   : {
         "dessert"   : "~0.3.2",
         "troop"     : "~0.7.2",
         "sntls"     : "~0.17.0",
@@ -15,5 +15,10 @@
         "candystore": "~0.2.10",
         "milkman"   : "~0.1.5",
         "lz-string" : "1.3.3"
+    },
+    "devDependencies": {
+        "grunt"        : "~0.4.5",
+        "grocer"       : "~0.4.4",
+        "grunt-replace": "~0.8.0"
     }
 }
