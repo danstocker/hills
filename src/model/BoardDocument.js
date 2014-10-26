@@ -71,25 +71,39 @@ troop.postpone(app.model, 'BoardDocument', function (/**app.model*/model) {
 
             /**
              * @param {string} mapString
+             * @returns {Array}
+             */
+            getTilesNodeFromString: function (mapString) {
+                var serializedTiles = mapString.match(/.{1,3}/g),
+                    i, serializedTile,
+                    TileItem = model.TileItem,
+                    result = [];
+
+                for (i = 0; i < serializedTiles.length; i++) {
+                    serializedTile = serializedTiles[i];
+                    result.push(TileItem.getTileNodeFromString(serializedTile));
+                }
+
+                return result;
+            },
+
+            /**
+             * @param {string} mapString
              * @returns {app.model.BoardDocument}
              */
             fromString: function (mapString) {
-                var tilesKey = this.entityKey.getFieldKey('tiles'),
-                    serializedTiles = mapString.match(/.{1,3}/g)
-                        .toCollection(),
-                    width = Math.sqrt(serializedTiles.getKeyCount() / 4);
+                // touching patterns document so indexes will initialize on demand
+                'patterns/all'.toDocument();
+
+                var width = Math.sqrt(mapString.length / 12);
 
                 // writing dimensions
                 this
                     .setWidth(width)
                     .setHeight(width * 4);
 
-                // writing tile items
-                serializedTiles
-                    .mapValues(function (serializedTile) {
-                        return model.TileItem.createTileItemNode(serializedTile);
-                    })
-                    .passItemsTo(this._setTiles, this);
+                // writing tiles collection
+                this._setTiles(this.getTilesNodeFromString(mapString));
 
                 return this;
             },

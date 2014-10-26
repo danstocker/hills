@@ -56,23 +56,6 @@ troop.postpone(app.model, 'TileItem', function () {
         })
         .addMethods(/** @lends app.model.TileItem# */{
             /**
-             * @param {string} serializedTile Tile in string format.
-             * @returns {object}
-             * @memberOf app.model.TileItem
-             */
-            createTileItemNode: function (serializedTile) {
-                var patternKey = 'patterns/all'.toDocument().getPatternKeyBySymbol(serializedTile[0]),
-                    orientation = parseInt(this.symbolToOrientation.getItem(serializedTile[1]), 10),
-                    elevation = parseInt(this.symbolToElevation.getItem(serializedTile[2]), 10);
-
-                return {
-                    pattern    : patternKey.toString(),
-                    orientation: orientation,
-                    elevation  : elevation
-                };
-            },
-
-            /**
              * @param {bookworm.DocumentKey} patternKey
              * @returns {app.model.TileItem}
              */
@@ -156,6 +139,23 @@ troop.postpone(app.model, 'TileItem', function () {
                 var currentOrientation = this.getOrientation();
                 this.setOrientation((currentOrientation + 270) % 360);
                 return this;
+            },
+
+            /**
+             * @param {string} serializedTile Tile in string format.
+             * @returns {object}
+             * @memberOf app.model.TileItem
+             */
+            getTileNodeFromString: function (serializedTile) {
+                var patternRef = bookworm.index.items.pattern['by-symbol'][serializedTile[0]],
+                    orientation = parseInt(this.symbolToOrientation.items[serializedTile[1]], 10),
+                    elevation = parseInt(this.symbolToElevation.items[serializedTile[2]], 10);
+
+                return {
+                    pattern    : patternRef,
+                    orientation: orientation,
+                    elevation  : elevation
+                };
             },
 
             /**
