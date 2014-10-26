@@ -2,6 +2,18 @@
     "name"           : "hills",
     "version"        : "0.1.0",
     "description"    : "Isometric game map editor, demo app for candystore, shoeshine, bookworm, & milkman",
+    "keywords"       : [
+        "demo", "isometric", "map editor",
+        "candystore", "shoeshine", "milkman", "bookworm",
+        "grocer", "sntls", "troop"
+    ],
+    "author"         : "Dan Stocker <dan@kwaia.com>",
+    "copyright"      : "Copyright (c) 2014 Dan Stocker",
+    "license"        : "MIT",
+    "repository"     : {
+        "type": "git",
+        "url" : "https://github.com/danstocker/hills.git"
+    },
     "dependencies"   : {
         "dessert"   : "~0.3.2",
         "troop"     : "~0.7.2",
