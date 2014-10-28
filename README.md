@@ -26,4 +26,6 @@ Usage
 Credits
 -------
 
+Hills kicked off as a hack-day project at [Mangahigh](https://twitter.com/mangahigh). 
+
 Tile artwork by [www.kenney.nl](http://www.kenney.nl) under CC0 license.
