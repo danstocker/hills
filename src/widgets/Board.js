@@ -57,9 +57,12 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
                             .setInlineStyle('left', columnIndex * tileWidth + horizontalShift + 'px')
                             .setInlineStyle('top', rowIndex * tileHeight / 2 + 'px');
 
+                        // adding widget to parent without rendering
                         Progenitor.addToParent.call(tile, that);
+                        tile.afterAdd();
                     });
 
+                // rendering entire board at once
                 this.reRender();
             }
         })
