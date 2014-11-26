@@ -37,12 +37,17 @@ troop.postpone(app.model, 'CharacterModel', function () {
             },
 
             /**
-             * @param {troop.Base} trait
+             * @param {troop.Base} traitName
              * @returns {app.model.CharacterModel}
              */
-            addTrait: function (trait) {
+            addTrait: function (traitName) {
+                var trait = app.model[traitName];
+
+                dessert.assert(troop.Base.isBaseOf(trait), "Invalid trait name");
+
                 base.addTrait.call(this, trait);
                 trait.init.apply(this, slice.call(arguments, 1));
+
                 return this;
             },
 
