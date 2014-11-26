@@ -57,7 +57,9 @@ troop.postpone(app.model, 'CharacterModel', function () {
 
             /** @returns {string} */
             getName: function () {
-                return this.characterDocument.getField('name').getValue() || "Unnamed Character";
+                var characterDocument = this.characterDocument;
+                return characterDocument.getField('name').getValue() ||
+                       characterDocument.getField('id').getValue();
             }
         });
 });

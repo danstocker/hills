@@ -40,6 +40,7 @@
                 "src/model/character/CharacterDocument.js",
                 "src/model/character/CharacterModel.js",
                 "src/model/character/Vulnerable.js",
+                "src/model/character/Fighter.js",
 
                 "src/widgets/Pattern.js",
                 "src/widgets/Tile.js",

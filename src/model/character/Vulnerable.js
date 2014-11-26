@@ -6,10 +6,10 @@ troop.postpone(app.model, 'Vulnerable', function () {
         self = base.extend();
 
     /**
-     * Expects to be added to CharacterDocument.
+     * Adds health to a CharacterModel.
      * @class
      * @extends troop.Base
-     * @extends app.model.CharacterDocument
+     * @extends app.model.CharacterModel
      */
     app.model.Vulnerable = self
         .addConstants(/** @lends app.model.Vulnerable */{
@@ -130,8 +130,7 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             (function (event) {
                 var characterId = event.originalPath.asArray[2];
                 characterId.toCharacterModel().onHealthFieldChange(event);
-            })
-        );
+            }));
 
     bookworm.entities
         .delegateSubscriptionTo(
@@ -141,10 +140,14 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             (function (event) {
                 var characterId = event.originalPath.asArray[2];
                 characterId.toCharacterModel().onHealthChange(event);
-            })
-        );
+            }));
 
     bookworm.entities
+        .subscribeTo(model.Vulnerable.EVENT_CHARACTER_HEALTH_CHANGE, 'document>character'.toPath(), function (event) {
+            var characterId = event.originalPath.asArray[2],
+                characterModel = characterId.toCharacterModel();
+            console.info("character health changed", characterModel.getName(), characterModel.getHealth());
+        })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_BIRTH, 'document>character'.toPath(), function (event) {
             var characterId = event.originalPath.asArray[2];
             console.info("character born", characterId.toCharacterModel().getName());
