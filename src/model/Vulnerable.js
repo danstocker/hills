@@ -40,7 +40,7 @@ troop.postpone(app.model, 'Vulnerable', function () {
         .addPrivateMethods(/** @lends app.model.Vulnerable# */{
             /** @param {number} health */
             _setHealth: function (health) {
-                this.getField('health').setValue(health);
+                this.characterDocument.getField('health').setValue(health);
             }
         })
         .addMethods(/** @lends app.model.Vulnerable# */{
@@ -51,7 +51,7 @@ troop.postpone(app.model, 'Vulnerable', function () {
 
             /** @returns {number} */
             getHealth: function () {
-                return this.getField('health').getValue();
+                return this.characterDocument.getField('health').getValue();
             },
 
             /**
@@ -128,9 +128,8 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             'document>character'.toPath(),
             'document>character>|>health'.toQuery(),
             (function (event) {
-                var healthFieldKey = event.originalPath.clone().trimLeft().toFieldKey(),
-                    characterDocument = healthFieldKey.documentKey.toDocument();
-                characterDocument.onHealthFieldChange(event);
+                var characterId = event.originalPath.asArray[2];
+                characterId.toCharacterModel().onHealthFieldChange(event);
             })
         );
 
@@ -140,26 +139,22 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             'document>character'.toPath(),
             'document>character>|'.toQuery(),
             (function (event) {
-                var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
-                    characterDocument = characterKey.toDocument();
-                characterDocument.onHealthChange(event);
+                var characterId = event.originalPath.asArray[2];
+                characterId.toCharacterModel().onHealthChange(event);
             })
         );
 
     bookworm.entities
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_BIRTH, 'document>character'.toPath(), function (event) {
-            var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
-                characterDocument = characterKey.toDocument();
-            console.info("character born", characterDocument.getCharacterName());
+            var characterId = event.originalPath.asArray[2];
+            console.info("character born", characterId.toCharacterModel().getName());
         })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_DEATH, 'document>character'.toPath(), function (event) {
-            var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
-                characterDocument = characterKey.toDocument();
-            console.info("character died", characterDocument.getCharacterName());
+            var characterId = event.originalPath.asArray[2];
+            console.info("character died", characterId.toCharacterModel().getName());
         })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_RESURRECTION_ATTEMPT, 'document>character'.toPath(), function (event) {
-            var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
-                characterDocument = characterKey.toDocument();
-            console.info("attempted to heal dead character", characterDocument.getCharacterName());
+            var characterId = event.originalPath.asArray[2];
+            console.info("attempted to heal dead character", characterId.toCharacterModel().getName());
         });
 }, app.model);
