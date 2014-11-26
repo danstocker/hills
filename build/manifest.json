@@ -30,11 +30,17 @@
                 "src/cache/config.js",
                 "src/cache/entities.js",
                 "src/state/BoardRouter.js",
+
                 "src/model/PatternDocument.js",
                 "src/model/PatternsDocument.js",
                 "src/model/BoardDocument.js",
                 "src/model/TileItem.js",
                 "src/model/PreferencesDocument.js",
+
+                "src/model/Document.js",
+                "src/model/CharacterDocument.js",
+                "src/model/Vulnerable.js",
+
                 "src/widgets/Pattern.js",
                 "src/widgets/Tile.js",
                 "src/widgets/Board.js",
