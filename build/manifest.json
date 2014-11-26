@@ -37,9 +37,9 @@
                 "src/model/TileItem.js",
                 "src/model/PreferencesDocument.js",
 
-                "src/model/CharacterDocument.js",
-                "src/model/CharacterModel.js",
-                "src/model/Vulnerable.js",
+                "src/model/character/CharacterDocument.js",
+                "src/model/character/CharacterModel.js",
+                "src/model/character/Vulnerable.js",
 
                 "src/widgets/Pattern.js",
                 "src/widgets/Tile.js",
