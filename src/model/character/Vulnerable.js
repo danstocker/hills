@@ -17,9 +17,6 @@ troop.postpone(app.model, 'Vulnerable', function () {
             EVENT_CHARACTER_HEALTH_CHANGE: 'character-health-change',
 
             /** @constant */
-            EVENT_CHARACTER_BIRTH: 'character-birth',
-
-            /** @constant */
             EVENT_CHARACTER_DEATH: 'character-death',
 
             /** @constant */
@@ -108,9 +105,7 @@ troop.postpone(app.model, 'Vulnerable', function () {
 
                 this.setNextOriginalEvent(event);
 
-                if (typeof healthBefore === 'undefined' && healthAfter > 0) {
-                    this.triggerSync(this.EVENT_CHARACTER_BIRTH);
-                } else if (healthBefore > 0 && healthAfter === 0) {
+                if (healthBefore > 0 && healthAfter === 0) {
                     this.triggerSync(this.EVENT_CHARACTER_DEATH);
                 }
 
@@ -147,10 +142,6 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             var characterId = event.originalPath.asArray[2],
                 characterModel = characterId.toCharacterModel();
             console.info("character health changed", characterModel.getName(), characterModel.getHealth());
-        })
-        .subscribeTo(model.Vulnerable.EVENT_CHARACTER_BIRTH, 'document>character'.toPath(), function (event) {
-            var characterId = event.originalPath.asArray[2];
-            console.info("character born", characterId.toCharacterModel().getName());
         })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_DEATH, 'document>character'.toPath(), function (event) {
             var characterId = event.originalPath.asArray[2];
