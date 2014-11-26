@@ -69,7 +69,7 @@ troop.postpone(app.model, 'Fighter', function () {
                 characterDocument.getField('defending').setValue(false);
 
                 if (opponent.damage) {
-                    opponent.damage(damage);
+                    opponent.damage(damage, this);
                 } else {
                     this.triggerSync(this.EVENT_ATTACK_FAIL, {
                         /** @type {app.model.CharacterModel} */

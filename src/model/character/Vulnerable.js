@@ -43,7 +43,9 @@ troop.postpone(app.model, 'Vulnerable', function () {
         .addMethods(/** @lends app.model.Vulnerable# */{
             /** @ignore */
             init: function () {
+                bookworm.entities.setNextPayload({ agent: this });
                 this._setHealth(this.HEALTH_MAX);
+                bookworm.entities.clearNextPayload();
             },
 
             /** @returns {number} */
@@ -53,17 +55,23 @@ troop.postpone(app.model, 'Vulnerable', function () {
 
             /**
              * @param {number} points
+             * @param {app.model.CharacterModel} agent
              * @returns {app.model.Vulnerable}
              */
-            heal: function (points) {
+            heal: function (points, agent) {
                 var currentHealth = this.getHealth(),
                     newHealth;
 
                 if (currentHealth > 0) {
                     newHealth = currentHealth + Math.min(points, this.HEALTH_MAX_POS_DELTA);
+                    bookworm.entities.setNextPayload({ agent: agent });
                     this._setHealth(Math.min(this.HEALTH_MAX, newHealth));
+                    bookworm.entities.clearNextPayload();
                 } else {
-                    this.triggerSync(this.EVENT_CHARACTER_RESURRECTION_ATTEMPT);
+                    this
+                        .setNextPayload({ agent: agent })
+                        .triggerSync(this.EVENT_CHARACTER_RESURRECTION_ATTEMPT)
+                        .clearNextPayload();
                 }
 
                 return this;
@@ -71,12 +79,17 @@ troop.postpone(app.model, 'Vulnerable', function () {
 
             /**
              * @param {number} points
+             * @param {app.model.CharacterModel} agent
              * @returns {app.model.Vulnerable}
              */
-            damage: function (points) {
+            damage: function (points, agent) {
                 var currentHealth = this.getHealth(),
                     newHealth = currentHealth - Math.min(points, this.HEALTH_MAX_NEG_DELTA);
+
+                bookworm.entities.setNextPayload({ agent: agent });
                 this._setHealth(Math.max(this.HEALTH_MIN, newHealth));
+                bookworm.entities.clearNextPayload();
+
                 return this;
             },
 
@@ -89,7 +102,8 @@ troop.postpone(app.model, 'Vulnerable', function () {
                     .setNextOriginalEvent(event)
                     .triggerSync(this.EVENT_CHARACTER_HEALTH_CHANGE, {
                         healthBefore: event.beforeValue,
-                        healthAfter : event.afterValue
+                        healthAfter : event.afterValue,
+                        agent       : event.payload.agent
                     })
                     .clearNextOriginalEvent();
             },
@@ -106,7 +120,9 @@ troop.postpone(app.model, 'Vulnerable', function () {
                 this.setNextOriginalEvent(event);
 
                 if (healthBefore > 0 && healthAfter === 0) {
-                    this.triggerSync(this.EVENT_CHARACTER_DEATH);
+                    this.triggerSync(this.EVENT_CHARACTER_DEATH, {
+                        agent: event.payload.agent
+                    });
                 }
 
                 this.clearNextOriginalEvent();
@@ -140,15 +156,18 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
     bookworm.entities
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_HEALTH_CHANGE, 'document>character'.toPath(), function (event) {
             var characterId = event.originalPath.asArray[2],
-                characterModel = characterId.toCharacterModel();
-            console.info("character health changed", characterModel.getName(), characterModel.getHealth());
+                characterModel = characterId.toCharacterModel(),
+                agent = event.payload.agent;
+            console.info("character health changed", characterModel.getName(), characterModel.getHealth(), "by", agent.getName());
         })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_DEATH, 'document>character'.toPath(), function (event) {
-            var characterId = event.originalPath.asArray[2];
-            console.info("character died", characterId.toCharacterModel().getName());
+            var characterId = event.originalPath.asArray[2],
+                agent = event.payload.agent;
+            console.info("character died", characterId.toCharacterModel().getName(), "by", agent.getName());
         })
         .subscribeTo(model.Vulnerable.EVENT_CHARACTER_RESURRECTION_ATTEMPT, 'document>character'.toPath(), function (event) {
-            var characterId = event.originalPath.asArray[2];
-            console.info("attempted to heal dead character", characterId.toCharacterModel().getName());
+            var characterId = event.originalPath.asArray[2],
+                agent = event.payload.agent;
+            console.info("attempted to heal dead character", characterId.toCharacterModel().getName(), "by", agent.getName());
         });
 }, app.model);
