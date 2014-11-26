@@ -3,7 +3,8 @@ troop.postpone(app.model, 'CharacterDocument', function () {
     "use strict";
 
     var base = bookworm.Document,
-        self = base.extend(),
+        self = base.extend()
+            .addTrait(evan.Evented),
         slice = Array.prototype.slice;
 
     /**
@@ -16,8 +17,10 @@ troop.postpone(app.model, 'CharacterDocument', function () {
     /**
      * @class
      * @extends bookworm.Document
+     * @extends evan.Evented
      */
     app.model.CharacterDocument = self
+        .setEventSpace(bookworm.entities.eventSpace)
         .addMethods(/** @lends app.model.CharacterDocument# */{
             /**
              * @param {bookworm.DocumentKey} characterKey
@@ -25,6 +28,7 @@ troop.postpone(app.model, 'CharacterDocument', function () {
              */
             init: function (characterKey) {
                 base.init.call(this, characterKey);
+                this.setEventPath(characterKey.getEntityPath());
                 this.getField('id')
                     .setValue(characterKey.documentId);
             },

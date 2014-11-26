@@ -23,6 +23,9 @@ troop.postpone(app.model, 'Vulnerable', function () {
             EVENT_CHARACTER_DEATH: 'character-death',
 
             /** @constant */
+            EVENT_CHARACTER_RESURRECTION_ATTEMPT: 'character-resurrect-attempt',
+
+            /** @constant */
             HEALTH_MIN: 0,
 
             /** @constant */
@@ -63,7 +66,7 @@ troop.postpone(app.model, 'Vulnerable', function () {
                     newHealth = currentHealth + Math.min(points, this.HEALTH_MAX_POS_DELTA);
                     this._setHealth(Math.min(this.HEALTH_MAX, newHealth));
                 } else {
-                    console.warn("can't heal dead character", this.getCharacterName());
+                    this.triggerSync(this.EVENT_CHARACTER_RESURRECTION_ATTEMPT);
                 }
 
                 return this;
@@ -85,14 +88,13 @@ troop.postpone(app.model, 'Vulnerable', function () {
              * @ignore
              */
             onHealthFieldChange: function (event) {
-                bookworm.entities
-                    .spawnEvent(this.EVENT_CHARACTER_HEALTH_CHANGE)
-                    .setOriginalEvent(event)
-                    .setPayload({
+                this
+                    .setNextOriginalEvent(event)
+                    .triggerSync(this.EVENT_CHARACTER_HEALTH_CHANGE, {
                         healthBefore: event.beforeValue,
                         healthAfter : event.afterValue
                     })
-                    .triggerSync(this.entityKey.getEntityPath());
+                    .clearNextOriginalEvent();
             },
 
             /**
@@ -104,17 +106,15 @@ troop.postpone(app.model, 'Vulnerable', function () {
                     healthBefore = healthInfo.healthBefore,
                     healthAfter = healthInfo.healthAfter;
 
+                this.setNextOriginalEvent(event);
+
                 if (typeof healthBefore === 'undefined' && healthAfter > 0) {
-                    bookworm.entities
-                        .spawnEvent(this.EVENT_CHARACTER_BIRTH)
-                        .setOriginalEvent(event)
-                        .triggerSync(this.entityKey.getEntityPath());
+                    this.triggerSync(this.EVENT_CHARACTER_BIRTH);
                 } else if (healthBefore > 0 && healthAfter === 0) {
-                    bookworm.entities
-                        .spawnEvent(this.EVENT_CHARACTER_DEATH)
-                        .setOriginalEvent(event)
-                        .triggerSync(this.entityKey.getEntityPath());
+                    this.triggerSync(this.EVENT_CHARACTER_DEATH);
                 }
+
+                this.clearNextOriginalEvent();
             }
         });
 });
@@ -156,5 +156,10 @@ troop.amendPostponed(bookworm, 'entities', function (ns, className, /**app.model
             var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
                 characterDocument = characterKey.toDocument();
             console.info("character died", characterDocument.getCharacterName());
+        })
+        .subscribeTo(model.Vulnerable.EVENT_CHARACTER_RESURRECTION_ATTEMPT, 'document>character'.toPath(), function (event) {
+            var characterKey = event.originalPath.clone().trimLeft().toDocumentKey(),
+                characterDocument = characterKey.toDocument();
+            console.info("attempted to heal dead character", characterDocument.getCharacterName());
         });
 }, app.model);
