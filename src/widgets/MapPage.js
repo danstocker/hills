@@ -33,14 +33,6 @@ troop.postpone(app.widgets, 'MapPage', function (/**app.widgets*/widgets, classN
                         'patterns/all/patterns'.toFieldKey())
                     .setChildName('palette-button')
                     .addToParent(this);
-            },
-
-            /**
-             * @returns {string}
-             * @ignore
-             */
-            contentMarkup: function () {
-                return this.children.toString();
             }
         });
 });

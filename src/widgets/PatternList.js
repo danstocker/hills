@@ -46,18 +46,10 @@ troop.postpone(app.widgets, 'PatternList', function (/**app.widgets*/widgets, cl
             },
 
             /**
-             * @returns {string}
-             * @ignore
-             */
-            contentMarkup: function () {
-                return this.children.toString();
-            },
-
-            /**
              * @param {bookworm.ReferenceItemKey} itemKey
              * @returns {app.widgets.PatternOption}
              */
-            createItemWidget: function (itemKey) {
+            spawnItemWidget: function (itemKey) {
                 var patternKey = itemKey.referenceKey;
                 return widgets.PatternOption.create(patternKey)
                     .setOptionValue(patternKey.toString());

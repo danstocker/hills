@@ -38,7 +38,7 @@ troop.postpone(app.state, 'BoardRouter', function () {
             onRouteChange: function (event) {
                 var beforeRoute = event.beforeRoute,
                     afterRoute = event.afterRoute,
-                    emptyRoute = [].toRoute();
+                    emptyRoute = [''].toRoute();
 
                 if (afterRoute) {
                     if (afterRoute.equals(emptyRoute)) {

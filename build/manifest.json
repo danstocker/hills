@@ -11,6 +11,7 @@
                 "node_modules/bookworm/bookworm.js",
                 "node_modules/jquery/dist/jquery.js",
                 "node_modules/shoeshine/shoeshine.js",
+                "node_modules/q/q.js",
                 "node_modules/poodle/poodle.js",
                 "lib/jquery-ui.js",
                 "node_modules/candystore/candystore.js",

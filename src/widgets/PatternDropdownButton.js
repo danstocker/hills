@@ -21,23 +21,23 @@ troop.postpone(app.widgets, 'PatternDropdownButton', function (/**app.widgets*/w
         .addPrivateMethods(/** @lends app.widgets.PatternDropdownButton# */{
             /** @private */
             _updatePattern: function () {
-                this.createLabelWidget()
+                this.spawnLabelWidget()
                     .setChildName('button-label')
                     .addToParent(this);
             }
         })
         .addMethods(/** @lends app.widgets.PatternDropdownButton# */{
             /** @returns {app.widgets.PatternList} */
-            createLabelWidget: function () {
+            spawnLabelWidget: function () {
                 var patternRef = this.entityKey.toField().getValue();
                 return patternRef ?
                     widgets.Pattern.create(patternRef.toDocumentKey()) :
-                    base.createLabelWidget.apply(this, arguments);
+                    base.spawnLabelWidget.apply(this, arguments);
             },
 
             /** @returns {candystore.DataDropdown} */
-            createDropdownWidget: function () {
-                return base.createDropdownWidget.apply(this, arguments)
+            spawnDropdownWidget: function () {
+                return base.spawnDropdownWidget.apply(this, arguments)
                     .setPositionOption('my', 'left top')
                     .setPositionOption('at', 'right top');
             },

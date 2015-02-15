@@ -92,14 +92,6 @@ troop.postpone(app.widgets, 'Board', function (/**app.widgets*/widgets, classNam
                 this.unbindAll();
             },
 
-            /**
-             * @returns {string}
-             * @ignore
-             */
-            contentMarkup: function () {
-                return this.children.toString();
-            },
-
             /** @ignore */
             onDocumentReplace: function () {
                 this._updateTiles();

@@ -7,6 +7,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             .addTrait(shoeshine.JqueryWidget)
             .addTrait(bookworm.EntityBound)
             .addTrait(candystore.EntityWidget)
+            .addTraitAndExtend(candystore.BinaryStateful)
             .addTrait(candystore.Highlightable, 'Highlightable');
 
     /**
@@ -39,6 +40,10 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
 
             /** @constant */
             TILE_VISIBLE_HEIGHT: 150
+        })
+        .addPublic(/** @lends app.widgets.Tile */{
+            /** @type {shoeshine.MarkupTemplate} */
+            contentTemplate: '<div class="mouse-area"></div>'.toMarkupTemplate()
         })
         .addPrivateMethods(/** @lends app.widgets.Tile# */{
             /** @private */
@@ -73,6 +78,7 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
                 base.init.call(this);
                 bookworm.EntityBound.init.call(this);
                 candystore.EntityWidget.init.call(this, tileKey);
+                candystore.BinaryStateful.init.call(this);
                 candystore.Highlightable.init.call(this);
 
                 this._updateElevation();
@@ -93,17 +99,6 @@ troop.postpone(app.widgets, 'Tile', function (/**app.widgets*/widgets, className
             afterRemove: function () {
                 base.afterAdd.call(this);
                 this.unbindAll();
-            },
-
-            /**
-             * @returns {string}
-             * @ignore
-             */
-            contentMarkup: function () {
-                return [
-                    this.getChild('pattern'),
-                    '<div class="mouse-area"></div>'
-                ].join('');
             },
 
             /** @returns {string} */
